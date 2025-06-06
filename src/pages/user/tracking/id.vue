@@ -29,6 +29,7 @@
               :key="index"
               :color="item.color"
               :icon="item.icon"
+              size="small"
             >
               <div class="text-center">
                 <div class="font-weight-medium mb-1">{{ item.status }}</div>
@@ -66,23 +67,22 @@
                 v-for="(item, index) in timelineItems"
                 :key="index"
                 :color="item.color"
-                small
+                size="small"
               >
                 <div class="d-flex flex-column flex-md-row mb-4">
                   <h3 class="me-md-4 mb-2 mb-md-0 timeline-date">{{ item.date }}</h3>
                   <div>
                     <strong class="d-block mb-1">{{ item.status }}</strong>
                     <span class="d-block mb-2">{{ item.description }}</span>
+                    <p class=" mb-1">{{ item.receive }}</p>
                     <div class="d-flex flex-wrap align-center">
-                      <p class="me-2 mb-1">{{ item.receive }}</p>
                       <v-btn
-                        v-if="item.status === 'รถออกเดินทาง'"
-                        class="mt-1"
+                        v-if="item.status === 'ถึงต้นทาง' || item.status === 'ลงสินค้าสำเร็จ'"
+                        class=""
                         color="black"
-                        density="compact"
+                        density="comfortable"
                         rounded="lg"
-                        style="min-width: 180px; white-space: normal;"
-                        text="หลักฐานการจัดส่งสินค้า"
+                        :text="item.status === 'ถึงต้นทาง' ? 'ดูรูปสินค้า' : 'ดูหลักฐานการจัดส่ง'"
                         @click="dialog_img = true"
                       />
                     </div>
@@ -96,14 +96,27 @@
     </v-row>
 
     <!-- ข้อมูลรถ -->
-    <v-card class="mt-2" flat>
+    <v-card class="mt-4" flat>
       <v-card-title>
         <p>ข้อมูลรถ</p>
       </v-card-title>
       <v-divider />
       <v-card-text>
         <v-row class="text">
-          <v-col cols="12" md="6">
+          <v-col cols="12" md="2">
+            <v-row>
+              <v-col cols="12">
+                <v-card border="thin" class="d-flex align-center justify-center" variant="outlined">
+                  <img
+                    alt="รถ"
+                    height="120px"
+                    src="@/assets/img/assd.png"
+                  >
+                </v-card>
+              </v-col>
+            </v-row>
+          </v-col>
+          <v-col cols="12" md="4">
             <v-row>
               <v-col cols="12">
                 <span class="blur">ประเภทรถ : </span><span>รถ 4 ล้อ</span>
@@ -111,16 +124,19 @@
               <v-col cols="12">
                 <span class="blur">คนขับ : </span><span>พงศ์ศักดิ์</span>
               </v-col>
+              <v-col cols="12">
+                <span class="blur">เบอร์โทรศัพท์ : </span><span>099-134-4312</span>
+              </v-col>
             </v-row>
           </v-col>
 
-          <v-col cols="12" md="6">
+          <v-col cols="12" md="5  ">
             <v-row>
               <v-col cols="12">
                 <span class="blur">ป้ายทะเบียน : </span><span>กศ1111</span>
               </v-col>
               <v-col cols="12">
-                <span class="blur">เบอร์โทรศัพท์ : </span><span>099-134-4312</span>
+                <span class="blur">ผู้ให้บริการ : </span><span>Triple S</span>
               </v-col>
             </v-row>
           </v-col>
@@ -128,6 +144,57 @@
       </v-card-text>
     </v-card>
 
+    <v-card class="mt-4" flat>
+      <v-card-title>
+        <p>ข้อมูลสินค้า</p>
+      </v-card-title>
+      <v-divider />
+      <v-card-text>
+        <v-row class="text">
+          <v-col cols="12" md="2">
+            <v-row>
+              <v-col cols="12">
+                <v-card border="thin" class="d-flex align-center justify-center" variant="outlined">
+                  <img
+                    alt="รถ"
+                    height="120px"
+                    src="@/assets/img/box.svg"
+                  >
+                </v-card>
+              </v-col>
+            </v-row>
+          </v-col>
+          <v-col cols="12" md="4">
+            <v-row>
+              <v-col cols="12">
+                <span class="blur">ประเภทสินค้า : </span><span>เครื่องใช้ไฟฟ้า</span>
+              </v-col>
+              <v-col cols="12">
+                <span class="blur">น้ำหนัก : </span><span>8 kg. </span>
+              </v-col>
+              <v-col cols="12">
+                <span class="blur">มูลค่าสินค้า : </span><span>800 บาท</span>
+              </v-col>
+            </v-row>
+          </v-col>
+
+          <v-col cols="12" md="5">
+            <v-row>
+              <v-col cols="12">
+                <span class="blur">รวมสินค้า : </span><span>800 บาท </span>
+              </v-col>
+              <v-col cols="12">
+                <span class="blur">ค่าจัดส่ง : </span><span> 1,287.00 บาท </span>
+              </v-col>
+            </v-row>
+          </v-col>
+        </v-row>
+      </v-card-text>
+      <v-divider />
+      <v-card-text class="d-flex justify-end">
+        <h2>รวม : 1,287.00 บาท </h2>
+      </v-card-text>
+    </v-card>
     <!-- Dialog รูปภาพ -->
     <v-dialog v-model="dialog_img" width="1200">
       <v-card>
@@ -153,53 +220,53 @@
         deliveryTimeline: [
           {
             time: '12 เม.ย. 68 - 09:00 น.',
-            status: 'เข้ารับพัสดุแล้ว',
-            icon: 'mdi-truck',
+            status: 'ถึงต้นทาง',
+            // icon: 'mdi-truck',
             color: 'primary',
           },
           {
             time: '12 เม.ย. 68 - 13:00 น.',
-            status: 'กำลังจัดส่ง',
-            icon: 'mdi-package-variant-closed',
+            status: 'อยู่ระหว่างการจัดส่ง',
+            // icon: 'mdi-package-variant-closed',
             color: 'info',
           },
           {
             time: '12 เม.ย. 68 - 16:00 น.',
-            status: 'ใกล้ถึงจุดหมาย',
-            icon: 'mdi-map-marker-radius',
+            status: 'ถึงปลายทาง',
+            // icon: 'mdi-map-marker-radius',
             color: 'warning',
           },
           {
             time: '12 เม.ย. 68 - 17:30 น.',
-            status: 'จัดส่งสำเร็จ',
-            icon: 'mdi-check-circle',
+            status: 'ลงสินค้าสำเร็จ',
+            // icon: 'mdi-check-circle',
             color: 'success',
           },
         ],
         timelineItems: [
           {
-            date: '2025-02-22 09:00',
-            status: 'รถออกเดินทาง',
-            description: 'รถออกจากต้นทางเรียบร้อย',
+            date: '2025-02-20 09:00',
+            status: 'ถึงต้นทาง',
+            description: 'สินค้าได้รับการนำขึ้นรถเรียบร้อยแล้ว',
             color: 'grey',
             receive: 'Max',
           },
           {
-            date: '2025-02-21 14:00',
-            status: 'ถึงสถานที่รับสินค้า',
-            description: 'รถถึงสถานที่รับสินค้าสำเร็จ',
+            date: '	2025-02-20 14:00',
+            status: 'อยู่ระหว่างการจัดส่ง',
+            description: 'สินค้าอยู่ระหว่างการจัดส่ง',
             color: 'grey',
           },
           {
-            date: '2025-02-20 09:00',
-            status: 'รถพร้อมใช้งาน',
-            description: 'รถพร้อมให้บริการเรียบร้อย',
+            date: '2025-02-21 16:00',
+            status: 'ถึงปลายทาง',
+            description: 'สินค้ามาถึงจุดหมายปลายทางแล้ว',
             color: 'grey',
           },
           {
-            date: '2025-02-20 11:00',
-            status: 'ออกใบแจ้งหนี้',
-            description: 'ออกใบแจ้งหนี้สำเร็จ',
+            date: '2025-02-21 20:00',
+            status: 'ลงสินค้าสำเร็จ',
+            description: 'ผู้รับ: สมชาย ใจดี ',
             color: 'grey',
           },
         ],

@@ -15,7 +15,7 @@
     </v-card>
     <v-list color="primary" nav>
       <v-list-item
-        v-for="(item, index) in menu_lspDriver"
+        v-for="(item, index) in menu_user"
         :key="index"
         :active="$route.path === item.route"
         :prepend-icon="item.icon"
@@ -74,19 +74,20 @@
   //   { title: 'งานของฉัน', icon: 'mdi-clipboard-text-outline', route: '/partner/myjob' },
   //   { title: 'ข้อมูลส่วนตัวและธุรกิจ', icon: 'mdi-account-outline', route: '/partner/profile' },
   // ]
-  // const menu_user = [
-  //   { title: 'หน้าหลัก', icon: 'mdi-home-outline', route: '/user' },
-  //   { title: 'จองรถขนส่ง', icon: 'mdi-truck-outline', route: '/user/booking' },
-  //   { title: 'เช็ครถว่าง', icon: 'mdi-car-search', route: '/user/checkcar' },
-  //   { title: 'ติดตามการจัดส่ง', icon: 'mdi-target', route: '/user/tracking' },
-  //   { title: 'การจองของฉัน', icon: 'mdi-file-document-multiple-outline', route: '/user/job' },
-  //   { title: 'แจ้งชำระเงิน', icon: 'mdi-currency-thb', route: '/user/payment' },
-  //   { title: 'ประวัติการจองรถ', icon: 'mdi-history', route: '/user/history' },
-  //   { title: 'ข้อมูลส่วนตัวและธุรกิจ', icon: 'mdi-account-outline', route: '/user/profile' },
-  //   { title: 'ติดต่อเรา', icon: 'mdi-message-text-outline', route: '/user/contact' },
-  // ]
-  const menu_lspDriver = [
-    { title: 'งานของฉัน', icon: 'mdi-map-outline', route: '/lspdriver' },
-    { title: 'ช้อความ', icon: 'mdi-truck-outline', route: '/lspdriver/message' },
+  const menu_user = [
+    { title: 'หน้าหลัก', icon: 'mdi-home-outline', route: '/user' },
+    { title: 'จองรถขนส่ง', icon: 'mdi-truck-outline', route: '/user/booking' },
+    { title: 'เช็ครถว่าง', icon: 'mdi-car-search', route: '/user/checkcar' },
+    { title: 'ติดตามการจัดส่ง', icon: 'mdi-target', route: '/user/tracking' },
+    { title: 'การจองของฉัน', icon: 'mdi-file-document-multiple-outline', route: '/user/job' },
+    { title: 'แจ้งชำระเงิน', icon: 'mdi-currency-thb', route: '/user/payment' },
+    { title: 'ประวัติการจองรถ', icon: 'mdi-history', route: '/user/history' },
+    { title: 'ข้อมูลส่วนตัวและธุรกิจ', icon: 'mdi-account-outline', route: '/user/profile' },
+    { title: 'ติดต่อเรา', icon: 'mdi-message-text-outline', route: '/user/contact' },
+    { title: 'แจ้งปัญหา', icon:'mdi-message-alert-outline',route: '/user/Complaint' },
   ]
+  // const menu_lspDriver = [
+  //   { title: 'งานของฉัน', icon: 'mdi-map-outline', route: '/lspdriver' },
+  //   { title: 'ช้อความ', icon: 'mdi-truck-outline', route: '/lspdriver/message' },
+  // ]
 </script>

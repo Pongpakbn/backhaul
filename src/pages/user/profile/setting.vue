@@ -1,13 +1,12 @@
 <template>
   <v-container>
     <v-card class="mb-2 pa-0" flat>
-      <v-card-title class="ma-2 d-flex justify-space-between">
+      <v-card-title class="pl-1 d-flex justify-space-between">
         <v-btn prepend-icon="mdi-chevron-left" text="ย้อนกลับ" variant="text" />
       </v-card-title>
-      <v-divider />
     </v-card>
 
-    <v-card>
+    <v-card flat>
       <v-card-title>
         <p>แก้ไขข้อมูลส่วนตัว</p>
       </v-card-title>
@@ -16,7 +15,13 @@
           <v-avatar size="120">
             <img alt="Profile Picture" src="https://cdn.vuetifyjs.com/images/john.jpg">
           </v-avatar>
-          <v-btn append-icon="mdi-square-edit-outline" class="mt-2 text-white rounded-md" color="#f2a900" text="แก้ไขรูป" />
+          <v-btn
+            append-icon="mdi-square-edit-outline"
+            class="mt-2 text-white rounded-md"
+            color="#f2a900"
+            flat
+            text="แก้ไขรูป"
+          />
         </div>
         <v-row align="center" class="ma-6" justify="center">
           <v-col cols="12" sm="6">
@@ -46,9 +51,8 @@
 
     <v-card class="mt-2" flat>
       <v-card-title>
-        <p>แก้ไขข้อมูลส่วนตัว</p>
+        <p>จัดการรหัสผ่าน</p>
       </v-card-title>
-      <v-divider />
       <v-card-text>
         <v-row align="center" class="ma-6" justify="center">
           <v-col cols="12" sm="4">

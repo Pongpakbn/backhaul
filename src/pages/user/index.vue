@@ -22,17 +22,21 @@
         v-for="(item, index) in cardItems"
         :key="index"
         cols="12"
-        lg="3"
+        lg="6"
         md="4"
         sm="6"
       >
-        <v-card class="h-100" elevation="4" flat rounded="lg">
-          <v-card-title
-            class="d-flex flex-column align-center justify-center text-center pa-6"
-          >
-            <v-icon class="mb-4" size="60">{{ item.icon }}</v-icon>
-            <p class="text-subtitle-1 font-weight-medium">{{ item.title }}</p>
-          </v-card-title>
+        <v-card class="pa-4" elevation="0" flat rounded="lg">
+          <v-card-text>
+            <v-row>
+              <v-col class="d-flex  align-center justify-center" cols="12" md="4">
+                <v-icon size="60">{{ item.icon }}</v-icon>
+              </v-col>
+              <v-col class="d-flex  align-center justify-start" cols="12" md="8">
+                <p class=" text-h4 font-weight-medium">{{ item.title }}</p>
+              </v-col>
+            </v-row>
+          </v-card-text>
         </v-card>
       </v-col>
     </v-row>

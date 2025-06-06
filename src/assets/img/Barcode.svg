@@ -1,0 +1,26 @@
+<?xml version="1.0"?><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="633" height="198" viewBox="0 0 422 145.2"><g><rect x="0" y="0" width="422" height="132" fill="white"/><g transform="translate(41 10) scale(3)"><g><text x="3" y="39.166666666667" text-anchor="middle" font-family="monospace" font-size="3.6666666666667" fill="black">0</text></g><g><rect x="9" y="0" width="1" height="37.333333333333" fill="url(#black)"/><rect x="11" y="0" width="1" height="37.333333333333" fill="url(#black)"/></g><g><rect x="15" y="0" width="2" height="35.5" fill="url(#black)"/><rect x="18" y="0" width="1" height="35.5" fill="url(#black)"/><text x="18" y="39.166666666667" text-anchor="middle" font-family="monospace" font-size="3.6666666666667" fill="black">0</text></g><g><rect x="20" y="0" width="1" height="35.5" fill="url(#black)"/><rect x="22" y="0" width="4" height="35.5" fill="url(#black)"/><text x="24" y="39.166666666667" text-anchor="middle" font-family="monospace" font-size="3.6666666666667" fill="black">6</text></g><g><rect x="27" y="0" width="1" height="35.5" fill="url(#black)"/><rect x="29" y="0" width="4" height="35.5" fill="url(#black)"/><text x="30" y="39.166666666667" text-anchor="middle" font-family="monospace" font-size="3.6666666666667" fill="black">6</text></g><g><rect x="36" y="0" width="2" height="35.5" fill="url(#black)"/><rect x="39" y="0" width="1" height="35.5" fill="url(#black)"/><text x="36" y="39.166666666667" text-anchor="middle" font-family="monospace" font-size="3.6666666666667" fill="black">0</text></g><g><rect x="41" y="0" width="2" height="35.5" fill="url(#black)"/><rect x="44" y="0" width="3" height="35.5" fill="url(#black)"/><text x="42" y="39.166666666667" text-anchor="middle" font-family="monospace" font-size="3.6666666666667" fill="black">8</text></g><g><rect x="49" y="0" width="2" height="35.5" fill="url(#black)"/><rect x="53" y="0" width="1" height="35.5" fill="url(#black)"/><text x="48" y="39.166666666667" text-anchor="middle" font-family="monospace" font-size="3.6666666666667" fill="black">1</text></g><g><rect x="55" y="0" width="1" height="37.333333333333" fill="url(#black)"/><rect x="57" y="0" width="1" height="37.333333333333" fill="url(#black)"/></g><g><rect x="59" y="0" width="1" height="35.5" fill="url(#black)"/><rect x="62" y="0" width="1" height="35.5" fill="url(#black)"/><text x="65" y="39.166666666667" text-anchor="middle" font-family="monospace" font-size="3.6666666666667" fill="black">8</text></g><g><rect x="66" y="0" width="1" height="35.5" fill="url(#black)"/><rect x="68" y="0" width="3" height="35.5" fill="url(#black)"/><text x="71" y="39.166666666667" text-anchor="middle" font-family="monospace" font-size="3.6666666666667" fill="black">4</text></g><g><rect x="73" y="0" width="3" height="35.5" fill="url(#black)"/><rect x="77" y="0" width="1" height="35.5" fill="url(#black)"/><text x="77" y="39.166666666667" text-anchor="middle" font-family="monospace" font-size="3.6666666666667" fill="black">9</text></g><g><rect x="80" y="0" width="3" height="35.5" fill="url(#black)"/><rect x="85" y="0" width="1" height="35.5" fill="url(#black)"/><text x="83" y="39.166666666667" text-anchor="middle" font-family="monospace" font-size="3.6666666666667" fill="black">0</text></g><g><rect x="87" y="0" width="1" height="35.5" fill="url(#black)"/><rect x="90" y="0" width="1" height="35.5" fill="url(#black)"/><text x="89" y="39.166666666667" text-anchor="middle" font-family="monospace" font-size="3.6666666666667" fill="black">8</text></g><g><rect x="94" y="0" width="1" height="35.5" fill="url(#black)"/><rect x="98" y="0" width="1" height="35.5" fill="url(#black)"/><text x="95" y="39.166666666667" text-anchor="middle" font-family="monospace" font-size="3.6666666666667" fill="black">7</text></g><g><rect x="101" y="0" width="1" height="37.333333333333" fill="url(#black)"/><rect x="103" y="0" width="1" height="37.333333333333" fill="url(#black)"/></g><g><text x="110" y="39.166666666667" text-anchor="middle" font-family="monospace" font-size="3.6666666666667" fill="black">&gt;</text></g><defs>
+			<linearGradient id="black" x1="0" x2="0" y1="0" y2="1">
+				<stop offset="0%" stop-color="#000"/>
+				<stop offset="100%" stop-color="#000"/>
+			</linearGradient>
+			<linearGradient id="navyBlue" x1="0" x2="0" y1="0" y2="1">
+				<stop offset="0%" stop-color="#00379c"/>
+				<stop offset="100%" stop-color="#00379c"/>
+			</linearGradient>
+			<linearGradient id="midnightGreen" x1="0" x2="0" y1="0" y2="1">
+				<stop offset="0%" stop-color="#008000"/>
+				<stop offset="100%" stop-color="#008000"/>
+			</linearGradient>
+			<linearGradient id="holo" x1="0" x2="0" y1="0" y2="1">
+				<stop offset="0%" stop-color="#ae00ff"/>
+				<stop offset="100%" stop-color="#009dff"/>
+			</linearGradient>
+			<linearGradient id="gradient" x1="0" x2="0" y1="0" y2="1">
+				<stop offset="0%" stop-color="#d85bc6"/>
+				<stop offset="100%" stop-color="#5c4cff"/>
+			</linearGradient>
+			<linearGradient id="neon" x1="0" x2="0" y1="0" y2="1">
+				<stop offset="0%" stop-color="#00c400"/>
+				<stop offset="100%" stop-color="#00612a"/>
+			</linearGradient>
+		</defs></g></g></svg>
