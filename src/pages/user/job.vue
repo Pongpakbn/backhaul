@@ -3,35 +3,38 @@
     <h2 class="mb-2">การจองของฉัน</h2>
 
     <!-- ปุ่ม tab -->
-    <v-card class="mt-2" rounded="lg" variant="text">
-      <v-card-text class="pl-0">
-        <v-row class="flex-nowrap" no-gutters style="overflow-x: auto">
-          <v-col
-            v-for="(label, i) in [
-              'บันทึกร่าง',
-              'หารถอยู่',
-              'อยู่ระหว่างเดินทาง',
-              'สำเร็จ',
-              'ยกเลิก',
-            ]"
-            :key="i"
-            class="flex-grow-0 flex-shrink-0"
-          >
-            <v-btn
-              class="mx-2 ma-1"
-              :color="activeTab === i ? 'primary' : 'white'"
-              rounded="md"
-              @click="activeTab = i"
-            >
-              {{ label }}
-            </v-btn>
-          </v-col>
-        </v-row>
-      </v-card-text>
-    </v-card>
+    <v-row class="flex-nowrap pl-0" no-gutters style="overflow-x: auto">
+      <v-col
+        v-for="(label, i) in [
+          'บันทึกร่าง',
+          'หารถอยู่',
+          'อยู่ระหว่างเดินทาง',
+          'สำเร็จ',
+          'ยกเลิก',
+        ]"
+        :key="i"
+        class="flex-grow-0 flex-shrink-0"
+      >
+        <v-btn
+          class="mx-2 ma-1"
+          :color="activeTab === i ? 'primary' : 'white'"
+          flat
+          rounded="md"
+          @click="activeTab = i"
+        >
+          {{ label }}
+        </v-btn>
+      </v-col>
+    </v-row>
 
     <!-- loop cards -->
-    <v-card v-for="(item, index) in 3" :key="index" class="mt-2" rounded="md">
+    <v-card
+      v-for="(item, index) in 3"
+      :key="index"
+      class="mt-2"
+      flat
+      rounded="md"
+    >
       <v-card-title
         class="bg-primary text-white d-flex flex-wrap justify-space-between align-center"
       >
@@ -104,21 +107,42 @@
           </v-col>
 
           <v-col cols="12">
-            <v-divider />
+            <v-card
+              class="text-white pa-2  mb-2"
+              style="background-color: #f2a901;"
+              variant="tonal"
+              width="850"
+            >
+              <v-icon class="mr-2" small>mdi-shield-check</v-icon>
+              {{ fullInsuranceText }}
+            </v-card>
           </v-col>
-
+          <v-divider />
           <v-col class="d-flex justify-space-between" cols="12" md="6">
             <h2 class="text-h6">ราคา</h2>
             <h2 class="text-h6">1,300.00 บาท</h2>
           </v-col>
-          <v-col class="d-flex justify-end" cols="12" md="6">
+
+          <v-col class="d-flex justify-end ga-2" cols="12" md="6">
             <v-btn
-              class="mx-2"
               color="sub"
               variant="outlined"
               @click="dialog_cancle = true"
             >ยกเลิกการจอง</v-btn>
+            <v-btn color="#000080" rounded="md" text="เพิ่มวงเงินประกัน" @click="dialog_offer = true" />
             <v-btn color="primary">ยืนยัน</v-btn>
+          </v-col>
+          <v-col cols="12" md="6">
+            <div class="d-flex align-center ga-2 text-red">
+              <v-icon>mdi-alert-outline</v-icon>
+              <h3>ยกเลิกผรีภายใน 30 นาที หลังจากยืนยันการจอง
+                (หลังจากนั้นจะมีค่าธรรมเนียมยกเลิก)</h3>
+            </div>
+            <div class="d-flex align-center ga-2 text-red">
+              <v-icon>mdi-close</v-icon>
+              <h3>ยกเลิกผรีภายใน 30 นาที หลังจากยืนยันการจอง
+                (หลังจากนั้นจะมีค่าธรรมเนียมยกเลิก)</h3>
+            </div>
           </v-col>
         </v-row>
       </v-card-text>
@@ -278,12 +302,35 @@
       </v-card-text>
     </v-card>
   </v-dialog>
+
+  <v-dialog v-model="dialog_offer" width="800">
+    <v-card>
+      <v-card-title class="d-flex justify-space-between align-center">
+        <p>เพิ่มวงเงินประกัน</p>
+        <v-btn icon="mdi-close" variant="text" @click="dialog_offer = false" />
+      </v-card-title>
+      <v-card-text>
+        <h3>วงเงินประกัน</h3>
+        <v-text-field hide-details placeholder="กรอกจำนวนเงิน" variant="outlined" />
+        <p class="text-red mt-2">จำนวนเงินขั้นต่ำ 2,000 บาท - จำนวนเงินสูงสุด 10,000 บาท</p>
+        <v-btn
+          block
+          class="mt-8"
+          color="primary"
+          size="large"
+          text="ยืนยัน"
+        />
+      </v-card-text>
+    </v-card>
+  </v-dialog>
 </template>
 
 <script>
   export default {
     data () {
       return {
+        dialog_offer: false,
+        fullInsuranceText: 'ประกันสินค้าระหว่างขนส่ง จ่ายตามจริงแต่ไม่เกิน 1,000,000 บาท/เที่ยว (หมายเหตุ*ขึ้นอยู่กับประกันภัยของแต่ละคัน)',
         selectunit: null,
         unitprice: [
           { title: 'บาท', value: 'baht' },

@@ -19,17 +19,20 @@
             v-for="(truck, index) in trucks"
             :key="index"
             cols="12"
-            md="6"
+            lg="6"
+            md="12"
             sm="6"
           >
             <v-card class="pa-4 border-thin" variant="outlined">
               <v-row no-gutters>
                 <!-- รูปไอคอนรถ -->
-                <v-col class="d-flex align-center" cols="4">
+                <v-col class="d-flex align-center" cols="12" md="4">
                   <v-img
-                    contain
-                    max-width="100%"
+                    alt="รถบรรทุก 4 ล้อ"
+                    class="mx-auto"
+                    height="150"
                     src="https://www.isuzucv.com/images/us/models/6.6l_npr_gas.webp"
+                    width="100%"
                   />
                 </v-col>
                 <!-- ข้อมูลรถ -->

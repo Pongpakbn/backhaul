@@ -150,7 +150,7 @@
       </v-card-text>
     </v-card>
 
-     <!-- ข้อมูลรถ -->
+    <!-- ข้อมูลรถ -->
     <v-card class="mt-4" flat>
       <v-card-title>
         <p>ข้อมูลรถ</p>

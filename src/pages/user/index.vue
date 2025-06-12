@@ -23,7 +23,7 @@
         :key="index"
         cols="12"
         lg="6"
-        md="4"
+        md="6"
         sm="6"
       >
         <v-card class="pa-4" elevation="0" flat rounded="lg">

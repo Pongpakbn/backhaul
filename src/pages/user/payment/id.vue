@@ -14,7 +14,7 @@
       <v-card-text>
         <v-radio-group v-model="payment">
           <v-row class="ma-4">
-            <v-col class="d-flex" cols="12" md="6">
+            <v-col class="d-flex" cols="12" md="4">
               <v-card
                 class="pa-4 w-100"
                 :class="payment === 'qr' ? 'selected-card' : ''"
@@ -26,7 +26,7 @@
               </v-card>
             </v-col>
 
-            <v-col class="d-flex" cols="12" md="6">
+            <v-col class="d-flex" cols="12" md="4">
               <v-card
                 class="pa-4 w-100"
                 :class="payment === 'debit' ? 'selected-card' : ''"
@@ -35,6 +35,18 @@
                 @click="payment = 'debit'"
               >
                 <v-radio label="บัตรเครดิต / เดบิต" value="debit" />
+              </v-card>
+            </v-col>
+
+            <v-col class="d-flex" cols="12" md="4">
+              <v-card
+                class="pa-4 w-100"
+                :class="payment === 'contact' ? 'selected-card' : ''"
+                flat
+                variant="outlined"
+                @click="payment = 'contact'"
+              >
+                <v-radio label="ลูกค้าสัญญา" value="contact" />
               </v-card>
             </v-col>
           </v-row>
@@ -105,9 +117,12 @@
           <p>หากเกินระยะเวลาที่กำหนด ระบบจะยกเลิกการจองอัตโนมัติ</p>
         </div>
       </v-card-text>
-      <div class="d-flex justify-end pa-4">
-        <v-btn class="me-4" color="red" text="ปิดหน้านี้" variant="outlined" />
-        <v-btn color="primary" text="ยืนยัน" />
+      <div class="d-flex justify-space-between pa-4">
+        <v-btn color="primary" text="ดาวน์โหลดใบแจ้งหนี้" variant="outlined" />
+        <div>
+          <v-btn class="me-4" color="red" text="ปิดหน้านี้" variant="outlined" />
+          <v-btn color="primary" text="ยืนยัน" />
+        </div>
       </div>
     </v-card>
   </v-dialog>

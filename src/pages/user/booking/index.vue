@@ -11,14 +11,21 @@
           <v-col cols="12" md="6">
             <v-card class="border mx-2 my-4" flat>
               <v-card-text class="pa-6 d-flex justify-center">
-                <v-img contain max-height="200" max-width="100%" src="@/assets/img/Box.svg" />
+                <v-img
+                  contain
+                  max-height="200"
+                  max-width="100%"
+                  src="@/assets/img/Box.svg"
+                />
               </v-card-text>
             </v-card>
-            <v-card-text class="mt-2 mx-2 mb-4">
+            <v-card-text class="mt-2  mb-4">
               <v-btn
                 block
                 class="text-white"
-                :color="selectedOption === 'รายชิ้น' ? 'primary' : 'grey lighten-1'"
+                :color="
+                  selectedOption === 'รายชิ้น' ? 'primary' : 'grey lighten-1'
+                "
                 rounded="lg"
                 size="large"
                 style="font-size: 28px; height: 56px"
@@ -33,14 +40,21 @@
           <v-col cols="12" md="6">
             <v-card class="border mx-2 my-4" flat>
               <v-card-text class="pa-6 d-flex justify-center">
-                <v-img contain max-height="200" max-width="100%" src="@/assets/img/Truck.svg" />
+                <v-img
+                  contain
+                  max-height="200"
+                  max-width="100%"
+                  src="@/assets/img/Truck.svg"
+                />
               </v-card-text>
             </v-card>
-            <v-card-text class="mt-2 mx-2 mb-4">
+            <v-card-text class="mt-2  mb-4">
               <v-btn
                 block
                 class="text-white"
-                :color="selectedOption === 'เหมาคัน' ? 'primary' : 'grey lighten-1'"
+                :color="
+                  selectedOption === 'เหมาคัน' ? 'primary' : 'grey lighten-1'
+                "
                 rounded="lg"
                 size="large"
                 style="font-size: 28px; height: 56px"
@@ -64,7 +78,7 @@
       <v-card-text>
         <v-row class="ma-4">
           <v-col cols="12" md="6">
-            <p>ประเภทสินค้า</p>
+            <p>ประเภทสินค้า  <span class="text-red">*</span></p>
             <v-text-field
               placeholder="ประเภทสินค้า"
               required
@@ -73,7 +87,7 @@
             />
           </v-col>
           <v-col cols="12" md="6">
-            <p>สินค้า</p>
+            <p>สินค้า <span class="text-red">*</span></p>
             <v-text-field
               placeholder="สินค้า"
               required
@@ -82,7 +96,7 @@
             />
           </v-col>
           <v-col cols="12">
-            <p>บรรจุภัฑณ์</p>
+            <p>บรรจุภัฑณ์ <span class="text-red">*</span></p>
             <v-text-field
               placeholder="บรรจุภัฑณ์"
               required
@@ -91,7 +105,7 @@
             />
           </v-col>
           <v-col cols="12" md="6">
-            <p>น้ำหนักสินค้าทั้งหมด</p>
+            <p>น้ำหนักสินค้าทั้งหมด <span class="text-red">*</span></p>
             <v-text-field
               placeholder="น้ำหนักสินค้าทั้งหมด"
               required
@@ -100,17 +114,30 @@
             />
           </v-col>
           <v-col cols="12" md="6">
-            <p>มูลค่าสินค้าทั้งหมด(บาท)</p>
+            <p>
+              มูลค่าสินค้าทั้งหมด(บาท) <span class="text-grey">ไม่บังคับ</span>
+            </p>
             <v-text-field
+              hide-details
               placeholder="มูลค่าทั้งหมด"
-              required
               rounded="lg"
               variant="outlined"
             />
+            <div class="text-grey-darken-1">
+              <p class="mt-2">
+                ⚠️ เงื่อนไขการรับสินค้าและพัสดุประกันสินค้าตามมาตรฐาน
+              </p>
+              <p>
+                กรณีไม่แสดงมูลค่า: คุ้มครองตามความเสียหายจริง แต่ไม่เกิน 500 บาทต่อชิ้น
+              </p>
+              <p>กรณีแสดงมูลค่า: คุ้มครองตามมูลค่าที่แสดง</p>
+              <p>(สูงสุดไม่เกินวงเงินประกันมาตรฐานระบบ แล้วแต่ประเภทรถ)</p>
+            </div>
           </v-col>
           <v-col cols="12">
             <p>รายละเอียดเพิ่มเติม</p>
             <v-textarea
+              auto-grow
               placeholder="ประเภทสินค้า"
               required
               rounded="lg"
@@ -119,10 +146,9 @@
             />
           </v-col>
           <v-col>
-            <v-btn block color="primary" size="x-large" text="ยินยันการเลือก" />
+            <v-btn block color="primary" size="x-large" text="ยืนยันการเลือก" />
           </v-col>
         </v-row>
-
       </v-card-text>
     </v-card>
   </v-container>
@@ -145,5 +171,4 @@
 .border {
   border-radius: 15px;
 }
-
 </style>

@@ -13,9 +13,19 @@
           class="mb-4"
           rounded="lg"
           size="large"
+          text="สมัครสมาชิก"
           variant="outlined"
           @click="nextPage"
-        >สมัครสมาชิก</v-btn>
+        />
+        <v-btn
+          block
+          class="mb-4"
+          rounded="lg"
+          size="large"
+          text="เบอร์โทรศัพท์"
+          variant="outlined"
+          @click="nextPage"
+        />
 
         <v-divider class="my-4">or</v-divider>
 

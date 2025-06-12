@@ -145,6 +145,16 @@
         />
       </v-card-title>
       <v-card-text>
+        <!-- peritem -->
+        <!-- <div>
+          <p>เบอร์โทรศัพท์</p>
+          <v-text-field
+            density="comfortable"
+            placeholder="กรอกชื่อที่ตั้งสถานที่"
+            rounded="lg"
+            variant="outlined"
+          />
+        </div> -->
         <v-row>
           <v-col cols="12" md="12">
             <p>ชื่อที่ตั้งสถานที่</p>

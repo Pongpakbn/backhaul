@@ -30,6 +30,7 @@ declare module 'vue-router/auto-routes' {
     '/auth/driver': RouteRecordInfo<'/auth/driver', '/auth/driver', Record<never, never>, Record<never, never>>,
     '/auth/login': RouteRecordInfo<'/auth/login', '/auth/login', Record<never, never>, Record<never, never>>,
     '/auth/lsp': RouteRecordInfo<'/auth/lsp', '/auth/lsp', Record<never, never>, Record<never, never>>,
+    '/auth/otp': RouteRecordInfo<'/auth/otp', '/auth/otp', Record<never, never>, Record<never, never>>,
     '/auth/register': RouteRecordInfo<'/auth/register', '/auth/register', Record<never, never>, Record<never, never>>,
     '/auth/shipper': RouteRecordInfo<'/auth/shipper', '/auth/shipper', Record<never, never>, Record<never, never>>,
     '/bill': RouteRecordInfo<'/bill', '/bill', Record<never, never>, Record<never, never>>,
