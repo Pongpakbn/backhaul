@@ -1,13 +1,12 @@
 <template>
   <v-container>
     <h2>ติดตามการขนส่ง</h2>
-    <v-card class="mt-2" rounded="md">
+    <v-card class="mt-2" flat rounded="md">
       <v-data-table
-        class="elevation-1"
         :headers="headers"
         :items="items"
       >
-        <template #item.status="{ item }">
+        <template #[`item.status`]="{ item }">
           <v-btn
             class="text-capitalize"
             color="purple"
@@ -19,10 +18,10 @@
           </v-btn>
         </template>
 
-        <template #item.details="{ item }">
+        <template #[`item.details`]="{ item }">
           <v-btn
             color="primary"
-            small
+            flat
             text="ดูรายละเอียด"
             @click="viewDetails(item)"
           />

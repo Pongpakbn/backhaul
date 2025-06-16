@@ -16,7 +16,8 @@
         prepend-inner-icon="mdi-magnify"
         rounded="md"
         single-line
-        variant="solo"
+        style="background-color: white;"
+        variant="outlined"
         width="200px"
       />
     </v-col>

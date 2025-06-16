@@ -3,13 +3,13 @@
     <div class="d-flex justify-space-between align-center">
       <h2>การจองที่ไม่พบรถ</h2>
     </div>
-    <v-card class="mt-2" rounded="md">
+    <v-card class="mt-2" flat rounded="md">
       <v-data-table
         class="elevation-1"
         :headers="headers"
         :items="items"
       >
-        <template #item.details="{ item }">
+        <template #[`item.details`]="{ item }">
           <v-btn
             color="primary"
             text="ตรวจสอบ"
@@ -62,11 +62,8 @@
       };
     },
     methods: {
-      viewStatus (item) {
-        alert(`Status for ${item.id}: ${item.status}`);
-      },
-      viewDetails (item) {
-        alert(`Details for ${item.id}`);
+      viewDetails () {
+        this.$router.push(`/admin/boardcast/id`)
       },
     },
   };

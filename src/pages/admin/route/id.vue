@@ -1,23 +1,26 @@
-```vue
 <template>
   <v-container>
-    <v-card flat rounded="lg">
-      <v-card-text>
+    <!-- Back Button Card -->
+    <v-card flat>
+      <v-card-title>
         <v-btn
-          class="pa-0"
+          aria-label="กลับไปหน้าการจัดการเส้นทาง"
           prepend-icon="mdi-chevron-left"
           text="ย้อนกลับ"
           variant="text"
-          @click="$router.push('/admin/car')"
+          @click="$router.push('/admin/route')"
         />
-      </v-card-text>
+      </v-card-title>
     </v-card>
+
+    <!-- Announcement Date Card -->
     <v-card class="mt-2" flat>
       <v-card-text>
         <v-row align="center">
           <v-col cols="12" sm="4">
             <h3>วันที่ประกาศแผน: {{ formattedCreateDate }}</h3>
           </v-col>
+
           <v-col cols="12" sm="4">
             <h3>
               วันหมดอายุของแผน:
@@ -25,6 +28,7 @@
               <span v-else class="text-grey">ยังไม่กำหนด</span>
             </h3>
           </v-col>
+
           <v-col class="d-flex justify-end flex-column" cols="12" sm="4">
             <v-date-input
               v-model="date"
@@ -47,149 +51,38 @@
         </v-row>
       </v-card-text>
     </v-card>
-    <v-card class="mt-2" flat rounded="lg">
-      <v-card-title>ข้อมูลรถ</v-card-title>
+
+    <v-card class="mt-2" flat title="ข้อมูลแผนการเดินรถ">
       <v-card-text>
-        <v-row>
-          <v-col cols="12" md="6">
-            <p style="opacity: 0.5;">ประเภทรถ</p>
-            <p>รถ 4 ล้อ(ตู้ทึบ)</p>
+        <v-row align="center">
+          <v-col cols="6">
+            <p>ชื่อคนขับรถ</p>
+            <p>นายแกรป ไดร์เวอร์ </p>
           </v-col>
-          <v-col cols="12" md="6">
-            <p style="opacity: 0.5;">ป้ายทะเบียน </p>
-            <p>กง 3721</p>
+          <v-col cols="6">
+            <p>รถ</p>
+            <p>รถ 4 ล้อ (ตู้ทึบ)</p>
           </v-col>
-          <v-col cols="12" md="6">
-            <p style="opacity: 0.5;">ยี่ห้อ</p>
-            <p>HINO</p>
+          <v-col cols="6">
+            <p>จุดเริ่มต้น</p>
+            <p>สุราษฎร์ธานี</p>
           </v-col>
-          <v-col cols="12" md="6">
-            <p style="opacity: 0.5;">รุ่น </p>
-            <p>FC 155</p>
+          <v-col cols="6">
+            <p>จุดสิ้นสุด</p>
+            <p>สมุทรสงคราม</p>
           </v-col>
-          <v-col cols="12" md="6">
-            <p style="opacity: 0.5;">ปีที่ผลิต</p>
-            <p>2018</p>
+          <v-col cols="6">
+            <p>วันที่ออกเดินทาง</p>
+            <p>27/6/2568 </p>
           </v-col>
-          <v-col cols="12" md="6">
-            <p style="opacity: 0.5;">ขนาดเครื่องยนต์ </p>
-            <p>2000</p>
-          </v-col>
-          <v-col cols="12" md="6">
-            <p style="opacity: 0.5;">ขนาดบรรทุก(หน่วย CBM)</p>
-            <p>3000</p>
-          </v-col>
-          <v-col cols="12" md="6">
-            <p style="opacity: 0.5;">วันหมดอายุภาษีรถ </p>
-            <p>20/04/2568</p>
-          </v-col>
-          <v-col cols="12" md="6">
-            <p style="opacity: 0.5;">วันหมดอายุ พรบ.</p>
-            <p>20/04/2568</p>
-          </v-col>
-          <v-col cols="12" md="6">
-            <p style="opacity: 0.5;">เรทราคา </p>
-            <p>2,500 </p>
+          <v-col cols="6">
+            <p>วันที่สิ้นสุดการเดินทาง</p>
+            <p>30/6/2568</p>
           </v-col>
         </v-row>
       </v-card-text>
     </v-card>
-    <v-card class="mt-2" flat rounded="lg">
-      <v-card-title>ข้อมูลเจ้าของรถ</v-card-title>
-      <v-card-text>
-        <v-row>
-          <v-col cols="12" md="6">
-            <p style="opacity: 0.5;">ชื่อเจ้าของรถ </p>
-            <p>นายพงศ์ภัค บุญนาม </p>
-          </v-col>
-          <v-col cols="12" md="6">
-            <p style="opacity: 0.5;">เบอร์โทรศัพท์ </p>
-            <p>098-678-9876 </p>
-          </v-col>
-          <v-col cols="12" md="6">
-            <p style="opacity: 0.5;">ที่อยู่ </p>
-            <p>2171 ถ. เพชรบุรีตัดใหม่ แขวงบางกะปิ เขตห้วยขวาง กรุงเทพมหานคร 10310 ประเทศไทย </p>
-          </v-col>
-          <v-col cols="12" md="6">
-            <p style="opacity: 0.5;">เอกสาร </p>
-            <v-btn
-              color="primary"
-              prepend-icon="mdi-eye"
-              rounded="md"
-              text="ดูเอกสาร"
-              variant="outlined"
-            />
-          </v-col>
-        </v-row>
-      </v-card-text>
-    </v-card>
-    <v-card class="mt-2" flat rounded="lg">
-      <v-card-title>ข้อมูลทางกฎหมาย</v-card-title>
-      <v-card-text>
-        <v-row>
-          <v-col cols="12" md="4">
-            <p style="opacity: 0.5;">ประเภทใบขับขี่ </p>
-            <p>ใบขับขี่ บ.2 </p>
-          </v-col>
-          <v-col cols="12" md="4">
-            <p style="opacity: 0.5;">เลขที่ใบขับขี่ </p>
-            <p>10934525 </p>
-          </v-col>
-          <v-col cols="12" md="4">
-            <p style="opacity: 0.5;">วันหมดอายุ </p>
-            <p>30/05/2568 </p>
-          </v-col>
-        </v-row>
-      </v-card-text>
-    </v-card>
-    <v-card class="mt-2" flat rounded="lg">
-      <v-card-title>ข้อมูลการทำประกันภัยรถขนส่ง</v-card-title>
-      <v-card-text>
-        <v-row>
-          <v-col cols="12" md="6">
-            <p style="opacity: 0.5;">ชื่อบริษัทประกันภัย </p>
-            <p>วิริยะประกันภัย </p>
-          </v-col>
-          <v-col cols="12" md="6">
-            <p style="opacity: 0.5;">หมายเลขกรมธรรม์ </p>
-            <p>57999002233 </p>
-          </v-col>
-          <v-col cols="12" md="6">
-            <p style="opacity: 0.5;">วันเริ่มต้นและสิ้นสุดการประกันภัย </p>
-            <p>20/04/2568 - 25/06/2568 </p>
-          </v-col>
-          <v-col cols="12" md="6">
-            <p style="opacity: 0.5;">ความคุ้มครอง </p>
-            <p>ความคุ้มครองกรณีชน,ความคุ้มครองสินค้าเสียหาย,ความคุ้มครองจากภัยธรรมชาติ</p>
-          </v-col>
-          <v-col cols="12">
-            <p style="opacity: 0.5;">เงื่อนไขการชดเชย </p>
-            <p>ความเสียหายจากอุบัติเหตุ,การสูญหาย,หรือความเสียหายที่เกิดจากภัยธรรมชาติ </p>
-          </v-col>
-        </v-row>
-      </v-card-text>
-    </v-card>
-    <v-card class="mt-2" flat rounded="lg">
-      <v-card-title>ข้อมูลการประกันสินค้าขณะขนส่ง</v-card-title>
-      <v-card-text>
-        <v-row>
-          <v-col cols="12" md="6">
-            <p style="opacity: 0.5;">หมายเลขกรมธรรม์สินค้า </p>
-            <p>57999002233 </p>
-          </v-col>
-          <v-col cols="12" md="6">
-            <p style="opacity: 0.5;">ระยะเวลาในการคุ้มครอง </p>
-            <p>คุ้มครองตั้งแต่รับสินค้า ถึงส่งสินค้า</p>
-          </v-col>
-          <v-col cols="12">
-            <p style="opacity: 0.5;">ความคุ้มครองประกันสินค้า </p>
-            <p>ค่าชดเชยจากการสูญเสีย,ความเสียหายจากอุบัติเหตุ,ความเสียหายที่เกิดขึ้นระหว่างการขนส่ง</p>
-          </v-col>
-        </v-row>
-      </v-card-text>
-    </v-card>
-    <v-card class="mt-2" flat rounded="lg">
-      <v-card-title>แบบประเมินตรวจสภาพรถ</v-card-title>
+    <v-card class="mt-2" flat>
       <v-card-text>
         <v-row dense>
           <h3>1. ตรวจระบบเบรก (B = BRAKE)</h3>
@@ -199,7 +92,7 @@
               <v-radio label="สูงไป" value="สูงไป" />
               <v-radio label="ปกติ" value="ปกติ" />
               <v-radio label="ต่ำไป" value="ต่ำไป" />
-              <v-radio label="สภาพใช้ได้" value="สภาพใช้ได้" />
+              <v-radio checked label="สภาพใช้ได้" value="สภาพใช้ได้" />
               <v-radio label="ควรเปลี่ยน" value="ควรเปลี่ยน" />
               <v-radio label="DOT 3" value="DOT 3" />
               <v-radio label="DOT 4" value="DOT 4" />
@@ -209,7 +102,7 @@
             <p>(ข) ระดับน้ำมันคลัตช์</p>
             <v-radio-group v-model="inspection.brake.clutchFluidLevel" color="green" inline>
               <v-radio label="สูงไป" value="สูงไป" />
-              <v-radio label="ปกติ" value="ปกติ" />
+              <v-radio checked label="ปกติ" value="ปกติ" />
               <v-radio label="ต่ำไป" value="ต่ำไป" />
               <v-radio label="สภาพใช้ได้" value="สภาพใช้ได้" />
               <v-radio label="ควรเปลี่ยน" value="ควรเปลี่ยน" />
@@ -218,7 +111,7 @@
           <v-col cols="12">
             <p>(ค) รอยรั่วซึมตามจุดต่างๆ</p>
             <v-radio-group v-model="inspection.brake.pipeCondition" color="green" inline>
-              <v-radio label="ไม่มี" value="ไม่มี" />
+              <v-radio checked label="ไม่มี" value="ไม่มี" />
               <v-radio label="มีรอยรั่ว: ระบุ" value="มีรอยรั่ว" />
               <v-text-field
                 v-model="inspection.brake.pipeConditionDetails"
@@ -236,7 +129,7 @@
             <p>(ง) ถังลม/การเครนที่ทิ้ง</p>
             <v-radio-group v-model="inspection.brake.oilLevel" color="green" inline>
               <v-radio label="รั่ว" value="รั่ว" />
-              <v-radio label="ปกติ" value="ปกติ" />
+              <v-radio checked label="ปกติ" value="ปกติ" />
               <v-radio label="ทำการซ่อมแซม" value="ทำการซ่อมแซม" />
             </v-radio-group>
           </v-col>
@@ -244,7 +137,7 @@
             <p>(จ) สายลม/จุดเชื่อมต่อ</p>
             <v-radio-group v-model="inspection.brake.pressureOperation" color="green" inline>
               <v-radio label="รั่ว" value="รั่ว" />
-              <v-radio label="ปกติ" value="ปกติ" />
+              <v-radio checked label="ปกติ" value="ปกติ" />
             </v-radio-group>
           </v-col>
           <v-col cols="12">
@@ -262,7 +155,7 @@
                 variant="underlined"
               />
               <v-radio label="คลิ๊ก" value="คลิ๊ก" />
-              <v-radio label="ใช้ได้" value="ใช้ได้" />
+              <v-radio checked label="ใช้ได้" value="ใช้ได้" />
             </v-radio-group>
           </v-col>
         </v-row>
@@ -272,7 +165,7 @@
             <p>(ก) ระดับน้ำกลั่น</p>
             <v-radio-group v-model="inspection.electric.tankCondition" color="green" inline>
               <v-radio label="สูงไป" value="สูงไป" />
-              <v-radio label="ปกติ" value="ปกติ" />
+              <v-radio checked label="ปกติ" value="ปกติ" />
               <v-radio label="ต่ำไป" value="ต่ำไป" />
               <v-radio label="ควรเติม" value="ควรเติม" />
             </v-radio-group>
@@ -280,7 +173,7 @@
           <v-col cols="12">
             <p>(ข) ขั้วแบตเตอรี่</p>
             <v-radio-group v-model="inspection.electric.clutchFluidLevel" color="green" inline>
-              <v-radio label="แน่นและมีฉนวนหุ้ม" value="แน่นและมีฉนวนหุ้ม" />
+              <v-radio checked label="แน่นและมีฉนวนหุ้ม" value="แน่นและมีฉนวนหุ้ม" />
               <v-radio label="ไม่แน่น" value="ไม่แน่น" />
               <v-radio label="แน่นและมีฉนวนบางรองรับ" value="แน่นและมีฉนวนบางรองรับ" />
             </v-radio-group>
@@ -288,14 +181,14 @@
           <v-col cols="12">
             <p>(ค) สายรัด และแท่นรองแบตเตอรี่</p>
             <v-radio-group v-model="inspection.electric.pipeCondition" color="green" inline>
-              <v-radio label="ปกติ" value="ปกติ" />
+              <v-radio checked label="ปกติ" value="ปกติ" />
               <v-radio label="ไม่แน่น" value="ไม่แน่น" />
             </v-radio-group>
           </v-col>
           <v-col cols="12">
             <p>(ง) ไฟสูง - ต่ำ / ไฟท้าย / ไฟเลี้ยว / ไฟถอยหลัง / ไฟหัวเก๋ง</p>
             <v-radio-group v-model="inspection.electric.pressureOperation" color="green" inline>
-              <v-radio label="ติดครบทุกดวง" value="ติดครบทุกดวง" />
+              <v-radio checked label="ติดครบทุกดวง" value="ติดครบทุกดวง" />
               <v-radio label="ใช้ไม่ได้ ระบุจุด" value="ใช้ไม่ได้" />
               <v-text-field
                 v-model="inspection.electric.pressureOperationDetails"
@@ -312,7 +205,7 @@
           <v-col cols="12">
             <p>(จ) แตร / ที่ปัดน้ำฝน / ฉีดน้ำล้างกระจก</p>
             <v-radio-group v-model="inspection.electric.leakOperation" color="green" inline>
-              <v-radio label="ใช้ได้" value="ใช้ได้" />
+              <v-radio checked label="ใช้ได้" value="ใช้ได้" />
               <v-radio label="อื่นๆ" value="อื่นๆ" />
               <v-text-field
                 v-model="inspection.electric.leakOperationDetails"
@@ -333,7 +226,7 @@
             <p>(ก) ระบบน้ำในหม้อน้ำและถังพักน้ำสำรอง</p>
             <v-radio-group v-model="inspection.water.tankCondition" color="green" inline>
               <v-radio label="สูงไป" value="สูงไป" />
-              <v-radio label="ปกติ" value="ปกติ" />
+              <v-radio checked label="ปกติ" value="ปกติ" />
               <v-radio label="ต่ำไป" value="ต่ำไป" />
               <v-radio label="สภาพใช้ได้" value="สภาพใช้ได้" />
               <v-radio label="ควรเปลี่ยนใหม่" value="ควรเปลี่ยนใหม่" />
@@ -342,14 +235,14 @@
           <v-col cols="12">
             <p>(ข) ระดับน้ำเช็ดกระจก</p>
             <v-radio-group v-model="inspection.water.clutchFluidLevel" color="green" inline>
-              <v-radio label="ปกติ" value="ปกติ" />
+              <v-radio checked label="ปกติ" value="ปกติ" />
               <v-radio label="พร่องควรเติม" value="พร่องควรเติม" />
             </v-radio-group>
           </v-col>
           <v-col cols="12">
             <p>(ค) ฝาปิดหม้อน้ำ</p>
             <v-radio-group v-model="inspection.water.pipeCondition" color="green" inline>
-              <v-radio label="ใช้ได้" value="ใช้ได้" />
+              <v-radio checked label="ใช้ได้" value="ใช้ได้" />
               <v-radio label="ควรเปลี่ยนใหม่" value="ควรเปลี่ยนใหม่" />
               <v-text-field
                 v-model="inspection.water.pipeConditionDetails"
@@ -367,7 +260,7 @@
             <p>(ง) สายพานทุกเส้น</p>
             <v-radio-group v-model="inspection.water.pressureOperation" color="green" inline>
               <v-radio label="ตึงไป" value="ตึงไป" />
-              <v-radio label="พอดี" value="พอดี" />
+              <v-radio checked label="พอดี" value="พอดี" />
               <v-radio label="หย่อนไป" value="หย่อนไป" />
               <v-radio label="สภาพดี" value="สภาพดี" />
               <v-radio label="ควรเปลี่ยน" value="ควรเปลี่ยน" />
@@ -376,7 +269,7 @@
           <v-col cols="12">
             <p>(จ) ท่อยางหม้อน้ำ</p>
             <v-radio-group v-model="inspection.water.leakOperation" color="green" inline>
-              <v-radio label="ใช้ได้" value="ใช้ได้" />
+              <v-radio checked label="ใช้ได้" value="ใช้ได้" />
               <v-radio label="ใช้ไม่ได้" value="ใช้ไม่ได้" />
             </v-radio-group>
           </v-col>
@@ -386,7 +279,7 @@
           <v-col cols="12">
             <p>(ก) ขนาดยางที่ใช้ / ความเร็วสูงสุด</p>
             <v-radio-group v-model="inspection.air.tankCondition" color="green" inline>
-              <v-radio label="ขนาดยางสูงสุด____ปอนด์ตารางนิ้ว  น้ำหนักบรรทุกสูงสุด____กิโลกรัม/เส้น" value="ขนาดยางสูงสุด" />
+              <v-radio checked label="ขนาดยางสูงสุด____ปอนด์ตารางนิ้ว  น้ำหนักบรรทุกสูงสุด____กิโลกรัม/เส้น" value="ขนาดยางสูงสุด" />
               <v-text-field
                 v-model="inspection.air.tankConditionDetails"
                 class="mx-4"
@@ -414,21 +307,21 @@
           <v-col cols="12">
             <p>(ข) ความลึกของดอกยาง</p>
             <v-radio-group v-model="inspection.air.clutchFluidLevel" color="green" inline>
-              <v-radio label="มากกว่า 1.6 ม.ม." value="มากกว่า 1.6 ม.ม." />
+              <v-radio checked label="มากกว่า 1.6 ม.ม." value="มากกว่า 1.6 ม.ม." />
               <v-radio label="น้อยกว่า 1.6 ม.ม." value="น้อยกว่า 1.6 ม.ม." />
             </v-radio-group>
           </v-col>
           <v-col cols="12">
             <p>(ค) สภาพแก้มยาง</p>
             <v-radio-group v-model="inspection.air.pipeCondition" color="green" inline>
-              <v-radio label="ปกติ" value="ปกติ" />
+              <v-radio checked label="ปกติ" value="ปกติ" />
               <v-radio label="ผิดปกติ" value="ผิดปกติ" />
             </v-radio-group>
           </v-col>
           <v-col cols="12">
             <p>(ง) ความดันลมยาง</p>
             <v-radio-group v-model="inspection.air.pressureOperation" color="green" inline>
-              <v-radio label="ถูกต้องตามคู่มือรถ" value="ถูกต้องตามคู่มือรถ" />
+              <v-radio checked label="ถูกต้องตามคู่มือรถ" value="ถูกต้องตามคู่มือรถ" />
               <v-radio label="สูงไป" value="สูงไป" />
               <v-radio label="ต่ำไป" value="ต่ำไป" />
             </v-radio-group>
@@ -436,44 +329,8 @@
           <v-col cols="12">
             <p>(จ) ฝาปิดจุ๊บเติมลม</p>
             <v-radio-group v-model="inspection.air.leakOperation" color="green" inline>
-              <v-radio label="มีครบ" value="มีครบ" />
+              <v-radio checked label="มีครบ" value="มีครบ" />
               <v-radio label="ไม่มี" value="ไม่มี" />
-            </v-radio-group>
-          </v-col>
-        </v-row>
-        <v-row dense>
-          <h3>5. ตรวจระดับน้ำมันเชื้อเพลิง (G = GASOLINE)</h3>
-          <v-col cols="12">
-            <p>(ก) รอยรั่วซึมตามจุดต่างๆ</p>
-            <v-radio-group v-model="inspection.gasoline.tankCondition" color="green" inline>
-              <v-radio label="ไม่มี" value="ไม่มี" />
-              <v-radio label="มี ระบุจุดที่รั่ว" value="มี" />
-              <v-text-field
-                v-model="inspection.gasoline.tankConditionDetails"
-                class="mx-4"
-                density="comfortable"
-                :disabled="inspection.gasoline.tankCondition !== 'มี'"
-                max-width="368"
-                placeholder="ระบุจุดที่รั่ว"
-                rounded="lg"
-                variant="underlined"
-              />
-            </v-radio-group>
-          </v-col>
-          <v-col cols="12">
-            <p>(ข) กรองน้ำมัน (รถดีเซล)</p>
-            <v-radio-group v-model="inspection.gasoline.clutchFluidLevel" color="green" inline>
-              <v-radio label="มีน้ำ" value="มีน้ำ" />
-              <v-radio label="ไม่มีน้ำ" value="ไม่มีน้ำ" />
-              <v-radio label="ไม่แน่ใจ" value="ไม่แน่ใจ" />
-            </v-radio-group>
-          </v-col>
-          <v-col cols="12">
-            <p>(ค) กรองอากาศ</p>
-            <v-radio-group v-model="inspection.gasoline.pipeCondition" color="green" inline>
-              <v-radio label="สภาพดี" value="สภาพดี" />
-              <v-radio label="พอใช้" value="พอใช้" />
-              <v-radio label="ควรเปลี่ยนใหม่" value="ควรเปลี่ยนใหม่" />
             </v-radio-group>
           </v-col>
         </v-row>
@@ -482,7 +339,7 @@
           <v-col cols="12">
             <p>(ก) ระดับน้ำมันเครื่อง</p>
             <v-radio-group v-model="inspection.oils.tankCondition" color="green" inline>
-              <v-radio label="ปกติ" value="ปกติ" />
+              <v-radio checked label="ปกติ" value="ปกติ" />
               <v-radio label="สูงไป" value="สูงไป" />
               <v-radio label="ต่ำไป" value="ต่ำไป" />
               <v-radio label="อยู่สภาพการใช้งาน" value="อยู่สภาพการใช้งาน" />
@@ -492,7 +349,7 @@
           <v-col cols="12">
             <p>(ข) ระดับน้ำมันพวงมาลัยพาวเวอร์</p>
             <v-radio-group v-model="inspection.oils.clutchFluidLevel" color="green" inline>
-              <v-radio label="ปกติ" value="ปกติ" />
+              <v-radio checked label="ปกติ" value="ปกติ" />
               <v-radio label="สูงไป" value="สูงไป" />
               <v-radio label="ต่ำไป" value="ต่ำไป" />
               <v-radio label="อยู่สภาพการใช้งาน" value="อยู่สภาพการใช้งาน" />
@@ -502,7 +359,7 @@
           <v-col cols="12">
             <p>(ค) ระดับน้ำมันเกียร์อัตโนมัติ</p>
             <v-radio-group v-model="inspection.oils.pipeCondition" color="green" inline>
-              <v-radio label="ปกติ" value="ปกติ" />
+              <v-radio checked label="ปกติ" value="ปกติ" />
               <v-radio label="สูงไป" value="สูงไป" />
               <v-radio label="ต่ำไป" value="ต่ำไป" />
               <v-radio label="อยู่สภาพการใช้งาน" value="อยู่สภาพการใช้งาน" />
@@ -512,7 +369,7 @@
           <v-col cols="12">
             <p>(ง) น้ำมันไฮดรอลิก (รถที่มีเท่านั้น)</p>
             <v-radio-group v-model="inspection.oils.oilLevel" color="green" inline>
-              <v-radio label="ปกติ" value="ปกติ" />
+              <v-radio checked label="ปกติ" value="ปกติ" />
               <v-radio label="สูงไป" value="สูงไป" />
               <v-radio label="ต่ำไป" value="ต่ำไป" />
               <v-radio label="อยู่สภาพการใช้งาน" value="อยู่สภาพการใช้งาน" />
@@ -522,62 +379,8 @@
           <v-col cols="12">
             <p>(จ) รอยรั่วซึมตามจุดต่างๆ</p>
             <v-radio-group v-model="inspection.oils.leakOperation" color="green" inline>
-              <v-radio label="ไม่มี" value="ไม่มี" />
+              <v-radio checked label="ไม่มี" value="ไม่มี" />
               <v-radio label="มีรอยรั่ว" value="มีรอยรั่ว" />
-            </v-radio-group>
-          </v-col>
-        </v-row>
-        <v-row dense>
-          <h3>7. เสียงดังต่างๆ (N = NOISE)</h3>
-          <v-col cols="12">
-            <p>(ก) เสียงดังผิดปกติอื่นๆ</p>
-            <v-radio-group v-model="inspection.noise.tankCondition" color="green" inline>
-              <v-radio label="ไม่มี" value="ไม่มี" />
-              <v-radio label="มี ระบุจุด" value="มี" />
-              <v-text-field
-                v-model="inspection.noise.tankConditionDetails"
-                class="mx-4"
-                density="comfortable"
-                :disabled="inspection.noise.tankCondition !== 'มี'"
-                max-width="368"
-                placeholder="ระบุจุด"
-                rounded="lg"
-                variant="underlined"
-              />
-            </v-radio-group>
-          </v-col>
-          <v-col cols="12">
-            <p>(ข) ยางแท่นเครื่อง</p>
-            <v-radio-group v-model="inspection.noise.clutchFluidLevel" color="green" inline>
-              <v-radio label="ใช้ได้" value="ใช้ได้" />
-              <v-radio label="ควรเปลี่ยน ระบุ" value="ควรเปลี่ยน" />
-              <v-text-field
-                v-model="inspection.noise.clutchFluidLevelDetails"
-                class="mx-4"
-                density="comfortable"
-                :disabled="inspection.noise.clutchFluidLevel !== 'ควรเปลี่ยน'"
-                max-width="368"
-                placeholder="ระบุรายละเอียด"
-                rounded="lg"
-                variant="underlined"
-              />
-            </v-radio-group>
-          </v-col>
-          <v-col cols="12">
-            <p>(ค) ท่อไอเสีย</p>
-            <v-radio-group v-model="inspection.noise.pipeCondition" color="green" inline>
-              <v-radio label="ไม่รั่ว" value="ไม่รั่ว" />
-              <v-radio label="รั่ว ระบุ" value="รั่ว" />
-              <v-text-field
-                v-model="inspection.noise.pipeConditionDetails"
-                class="mx-4"
-                density="comfortable"
-                :disabled="inspection.noise.pipeCondition !== 'รั่ว'"
-                max-width="368"
-                placeholder="ระบุรายละเอียด"
-                rounded="lg"
-                variant="underlined"
-              />
             </v-radio-group>
           </v-col>
         </v-row>
@@ -600,8 +403,8 @@
             </v-slider>
           </v-col>
           <v-col class="d-flex justify-end align-center ga-2" cols="12">
-            <v-btn prepend-icon="mdi-close" text="ไม่อนุมัติ" variant="outlined" @click="disapprove" />
-            <v-btn color="primary" prepend-icon="mdi-check" text="อนุมัติ" @click="approve" />
+            <v-btn prepend-icon="mdi-close" text="ไม่อนุมัติ" variant="outlined" />
+            <v-btn color="primary" prepend-icon="mdi-check" text="อนุมัติ" />
           </v-col>
         </v-row>
       </v-card-text>
@@ -610,7 +413,7 @@
 </template>
 
 <script>
-  import { VDateInput } from 'vuetify/labs/VDateInput'
+  import { VDateInput } from 'vuetify/labs/VDateInput';
 
   export default {
     components: {
@@ -622,7 +425,7 @@
         expireDate: null,
         announcementDate: '2025-06-27',
         dateSaved: false,
-        min: 50,
+        min: 0,
         max: 100,
         inspection: {
           brake: {
@@ -661,12 +464,6 @@
             pressureOperation: 'ถูกต้องตามคู่มือรถ',
             leakOperation: 'มีครบ',
           },
-          gasoline: {
-            tankCondition: 'ไม่มี',
-            tankConditionDetails: '',
-            clutchFluidLevel: 'ไม่มีน้ำ',
-            pipeCondition: 'สภาพดี',
-          },
           oils: {
             tankCondition: 'ปกติ',
             clutchFluidLevel: 'ปกติ',
@@ -674,185 +471,36 @@
             oilLevel: 'ปกติ',
             leakOperation: 'ไม่มี',
           },
-          noise: {
-            tankCondition: 'ไม่มี',
-            tankConditionDetails: '',
-            clutchFluidLevel: 'ใช้ได้',
-            clutchFluidLevelDetails: '',
-            pipeCondition: 'ไม่รั่ว',
-            pipeConditionDetails: '',
-          },
-          readiness: 75,
+          readiness: 80, // Default readiness percentage
         },
-      }
+      };
     },
     computed: {
       formattedCreateDate () {
-        return this.formatDate(this.announcementDate)
+        return this.formatDate(new Date(this.announcementDate));
       },
     },
     methods: {
-      formatDate (date) {
-        if (!date) return ''
-        const d = new Date(date)
-        const day = String(d.getDate()).padStart(2, '0')
-        const month = String(d.getMonth() + 1).padStart(2, '0')
-        const year = d.getFullYear() + 543 // Thai Buddhist calendar
-        return `${day}/${month}/${year}`
-      },
-      onDateChange (value) {
-        this.date = value
-        this.dateSaved = false
+      formatDate (d) {
+        if (!d) return '';
+        const date = new Date(d);
+        const day = String(date.getDate()).padStart(2, '0');
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const year = date.getFullYear();
+        return `${day}/${month}/${year}`;
       },
       saveDate () {
-        this.$swal
-          .fire({
-            title: 'ยืนยันการบันทึก',
-            text: 'คุณต้องการบันทึกวันหมดอายุของแผนนี้หรือไม่?',
-            icon: 'question',
-            showCancelButton: true,
-            confirmButtonText: 'ตกลง',
-            cancelButtonText: 'ยกเลิก',
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-          })
-          .then(result => {
-            if (result.isConfirmed) {
-              // Simulate API call
-              Promise.resolve({
-                data: {
-                  success: true,
-                  msg: 'บันทึกวันหมดอายุสำเร็จ',
-                },
-              }).then(response => {
-                if (response.data.success) {
-                  this.expireDate = this.date
-                  this.dateSaved = true
-                  this.$swal.fire({
-                    title: 'บันทึกสำเร็จ',
-                    text: response.data.msg,
-                    confirmButtonText: 'ตกลง',
-                    icon: 'success',
-                    timer: 1500,
-                    showConfirmButton: false,
-                  })
-                } else {
-                  this.$swal.fire({
-                    title: 'เกิดข้อผิดพลาด',
-                    text: response.data.msg,
-                    confirmButtonText: 'ตกลง',
-                    icon: 'error',
-                    timer: 1500,
-                    showConfirmButton: false,
-                  })
-                }
-              })
-            }
-          })
+        if (Array.isArray(this.date)) {
+          this.expireDate = this.date[1];
+        } else {
+          this.expireDate = this.date;
+        }
+        this.dateSaved = true;
+        console.log('บันทึกวันหมดอายุ:', this.expireDate);
       },
-      approve () {
-        this.$swal
-          .fire({
-            title: 'ยืนยันการอนุมัติ',
-            text: 'คุณต้องการอนุมัติรถคันนี้หรือไม่?',
-            icon: 'question',
-            showCancelButton: true,
-            confirmButtonText: 'ตกลง',
-            cancelButtonText: 'ยกเลิก',
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-          })
-          .then(result => {
-            if (result.isConfirmed) {
-              // Simulate API call
-              Promise.resolve({
-                data: {
-                  success: true,
-                  msg: 'อนุมัติรถสำเร็จ',
-                },
-              }).then(response => {
-                if (response.data.success) {
-                  this.$swal
-                    .fire({
-                      title: 'อนุมัติสำเร็จ',
-                      text: response.data.msg,
-                      confirmButtonText: 'ตกลง',
-                      icon: 'success',
-                      timer: 1500,
-                      showConfirmButton: false,
-                    })
-                    .then(() => {
-                      this.$router.push('/admin/car')
-                    })
-                } else {
-                  this.$swal.fire({
-                    title: 'เกิดข้อผิดพลาด',
-                    text: response.data.msg,
-                    confirmButtonText: 'ตกลง',
-                    icon: 'error',
-                    timer: 1500,
-                    showConfirmButton: false,
-                  })
-                }
-              })
-            }
-          })
-      },
-      disapprove () {
-        this.$swal
-          .fire({
-            title: 'ไม่อนุมัติ',
-            text: 'คุณต้องการไม่อนุมัติรถคันนี้หรือไม่?',
-            icon: 'question',
-            showCancelButton: true,
-            confirmButtonText: 'ตกลง',
-            cancelButtonText: 'ยกเลิก',
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-          })
-          .then(result => {
-            if (result.isConfirmed) {
-              // Simulate API call
-              Promise.resolve({
-                data: {
-                  success: true,
-                  msg: 'ไม่อนุมัติรถสำเร็จ',
-                },
-              }).then(response => {
-                if (response.data.success) {
-                  this.$swal
-                    .fire({
-                      title: 'ไม่อนุมัติสำเร็จ',
-                      text: response.data.msg,
-                      confirmButtonText: 'ตกลง',
-                      icon: 'success',
-                      timer: 1500,
-                      showConfirmButton: false,
-                    })
-                    .then(() => {
-                      this.$router.push('/admin/car')
-                    })
-                } else {
-                  this.$swal.fire({
-                    title: 'เกิดข้อผิดพลาด',
-                    text: response.data.msg,
-                    confirmButtonText: 'ตกลง',
-                    icon: 'error',
-                    timer: 1500,
-                    showConfirmButton: false,
-                  })
-                }
-              })
-            }
-          })
+      onDateChange () {
+        this.dateSaved = false; // รีเซ็ตทุกครั้งที่เลือกวันที่ใหม่
       },
     },
-  }
+  };
 </script>
-
-<style scoped>
-p {
-  font-size: 16px;
-}
-</style>
-```

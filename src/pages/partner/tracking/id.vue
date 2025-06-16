@@ -2,7 +2,7 @@
   <v-container>
     <v-card class="mb-2 pa-0" flat>
       <v-card-title class="ma-2 d-flex justify-space-between">
-        <v-btn prepend-icon="mdi-chevron-left" text="ย้อนกลับ" variant="text" />
+        <v-btn prepend-icon="mdi-chevron-left" text="ย้อนกลับ" variant="text" @click="$router.push('/partner/tracking')" />
       </v-card-title>
     </v-card>
     <v-card class="mt-2" flat>
@@ -111,6 +111,14 @@
         </v-card>
       </v-col>
     </v-row>
+    <v-dialog v-model="dialog_img" width="1200">
+      <v-card>
+        <v-img
+          aspect-ratio="16/9"
+          src="https://i2.wp.com/static.wixstatic.com/media/48ce99_250322292d784dc19b2221057acb01b7~mv2.jpg/v1/fill/w_566,h_303,al_c,lg_1,q_90/48ce99_250322292d784dc19b2221057acb01b7~mv2.webp?w=1200&ssl=1"
+        />
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 <script>
@@ -122,6 +130,7 @@
     },
     data () {
       return {
+        dialog_img:false,
         deliveryTimeline: [
           {
             time: '12 เม.ย. 68 - 09:00 น.',

@@ -30,19 +30,19 @@
         <v-divider class="my-4">or</v-divider>
 
         <v-form ref="form">
-          <p>Username</p>
+          <h4>ชื่อผู้ใช้</h4>
           <v-text-field
             v-model="username"
-            placeholder="Username"
+            placeholder="ชื่อผู้ใช้"
             prepend-inner-icon="mdi-account"
             required
             rounded="lg"
             variant="outlined"
           />
-          <p>Password</p>
+          <h4>รหัสผ่าน</h4>
           <v-text-field
             v-model="password"
-            placeholder="Password"
+            placeholder="รหัสผ่าน"
             prepend-inner-icon="mdi-lock"
             required
             rounded="lg"

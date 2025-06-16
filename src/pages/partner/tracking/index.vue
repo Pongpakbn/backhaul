@@ -8,7 +8,8 @@
       :items-per-page="5"
     >
       <template #[`item.action`]="{ item }">
-        <v-btn color="primary" prepend-icon="mdi-tag-outline" text="รายละเอียด" @click="$router.push(`/partner/booking/${item.id}`)" />
+        <!-- <v-btn color="primary" prepend-icon="mdi-tag-outline" text="รายละเอียด" @click="$router.push(`/partner/tracking/id`)" /> -->
+        <v-btn color="primary" prepend-icon="mdi-tag-outline" text="รายละเอียด" @click="$router.push(`/partner/tracking/${item.id}`)" />
       </template>
     </v-data-table>
   </v-card>
