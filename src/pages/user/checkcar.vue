@@ -24,7 +24,7 @@
               clearable
               density="comfortable"
               :items="dates"
-              placeholder="เลือกวันที่"
+              placeholder="เลือกวัน"
               variant="outlined"
             />
           </v-col>
@@ -140,7 +140,8 @@
                   <div class="text-center">
                     <strong class="text-black">จำนวนรถ</strong>
                     <h2>{{ vehicle.vehicleCount }} รถ</h2>
-                  </div></v-col>
+                  </div>
+                </v-col>
                 <!-- Price and Action -->
                 <v-col class="text-right pa-2" cols="12" sm="3">
                   <h2 class="mb-6 text-secondary">{{ vehicle.price }} บาท</h2>
@@ -165,7 +166,6 @@
   export default {
     data () {
       return {
-        // Filter selections
         filters: {
           vehicleType: null,
           date: null,
@@ -176,14 +176,16 @@
           productType: null,
           weight: null,
         },
-        // Mock filter options
-        vehicleTypes: ['รถ 4 ล้อ', 'รถ 6 ล้อ', 'รถ 10 ล้อ', 'รถตู้ทึบ'],
-        dates: ['12 ก.พ. 68', '13 ก.พ. 68', '14 ก.พ. 68', '15 ก.พ. 68'],
+        vehicleTypes: [
+          'รถ 4 ล้อ', 'รถ 6 ล้อ', 'รถ 10 ล้อ', 'รถตู้ทึบ',
+          'รถห้องเย็น', 'รถพ่วง', 'รถเทรลเลอร์', 'รถเครน',
+          'รถหัวลาก', 'รถปิคอัพ', 'รถกระบะตู้', 'รถกระบะมีคอก',
+        ],
+        dates: ['จันทร์', 'อังคาร', 'พุธ', 'พฤหัสบดี', 'ศุกร์', 'เสาร์', 'อาทิตย์'],
         provinces: ['อุบลราชธานี', 'นครศรีธรรมราช', 'กรุงเทพมหานคร', 'เชียงใหม่'],
         districts: ['เมือง', 'วารินชำราบ', 'ทุ่งสง', 'ลานสกา'],
         productTypes: ['สินค้าทั่วไป', 'อาหารสด', 'เครื่องใช้ไฟฟ้า', 'วัสดุก่อสร้าง'],
         weights: ['< 500 กก.', '500-1000 กก.', '1000-2000 กก.', '> 2000 กก.'],
-        // Mock vehicle availability data
         vehicles: [
           {
             id: 'V001',
@@ -197,7 +199,7 @@
             vehicleType: 'รถ 4 ล้อ',
             productType: 'สินค้าทั่วไป',
             weight: '< 500 กก.',
-            date: '12 ก.พ. 68',
+            date: 'จันทร์',
           },
           {
             id: 'V002',
@@ -211,7 +213,7 @@
             vehicleType: 'รถ 6 ล้อ',
             productType: 'เครื่องใช้ไฟฟ้า',
             weight: '500-1000 กก.',
-            date: '13 ก.พ. 68',
+            date: 'อังคาร',
           },
           {
             id: 'V003',
@@ -225,7 +227,7 @@
             vehicleType: 'รถ 4 ล้อ',
             productType: 'สินค้าทั่วไป',
             weight: '< 500 กก.',
-            date: '12 ก.พ. 68',
+            date: 'จันทร์',
           },
           {
             id: 'V004',
@@ -239,7 +241,7 @@
             vehicleType: 'รถ 10 ล้อ',
             productType: 'วัสดุก่อสร้าง',
             weight: '> 2000 กก.',
-            date: '14 ก.พ. 68',
+            date: 'พุธ',
           },
         ],
       };
@@ -261,9 +263,8 @@
       },
     },
     methods: {
-      handleInterest (vehicleId) {
-        console.log(`สนใจใช้งานรถ ID: ${vehicleId}`);
-      // Add logic for booking or further action
+      handleInterest () {
+        this.$router.push('/user/booking/route');
       },
     },
   };

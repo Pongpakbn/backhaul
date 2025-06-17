@@ -15,11 +15,11 @@
         <v-row>
           <v-col class="d-flex justify-start" cols="8">
             <v-avatar rounded="0" size="120">
-              <v-img contain src="@/assets/img/Box.svg" />
+              <v-img contain src="@/assets/img/logo-backhaul.png" />
             </v-avatar>
           </v-col>
           <v-col class="d-flex justify-end align-end" cols="4">
-            <h1 class="text-secondary">ใบเสร็จรับเงิน</h1>
+            <h1 class="text-secondary">ใบแจ้งหนี้</h1>
           </v-col>
         </v-row>
         <v-row>

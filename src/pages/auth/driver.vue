@@ -19,7 +19,7 @@
         </div>
         <v-row class="text-center">
           <v-col class="align-center justify-center" cols="12" md="6">
-            <v-card class="tex-center mt-16 " flat>
+            <v-card class="text-center mt-16" flat>
               <v-img src="@/assets/img/Free shipping-amico 1.svg" />
               <p class="pa-2">คุณเป็นเจ้าของรถบรรทุก</p>
               <h1>สมัครเพื่อหางานขนส่ง</h1>
@@ -104,6 +104,7 @@
                         rounded="lg"
                         size="x-large"
                         text="ลงทะเบียน"
+                        @click="register"
                       />
                     </v-col>
                   </v-row>
@@ -111,7 +112,6 @@
               </v-card-text>
             </v-card>
           </v-col>
-
           <v-col v-if="driverType === 'lsp'" cols="12" md="6">
             <v-card class="ma-4" variant="text">
               <v-card-text class="ma-4">
@@ -200,6 +200,7 @@
                         rounded="lg"
                         size="x-large"
                         text="ลงทะเบียน"
+                        @click="register"
                       />
                     </v-col>
                   </v-row>
@@ -212,8 +213,24 @@
     </v-card>
   </v-container>
 </template>
-<script setup>
-  import { ref } from 'vue';
 
-  const driverType = ref('freelance'); // ค่าเริ่มต้น
+<script>
+
+  export default {
+    name: 'DriverRegistration',
+    data () {
+      return {
+        driverType: 'freelance', // Default value
+      };
+    },
+    methods: {
+      register () {
+        if (this.driverType === 'freelance') {
+          this.$router.push('/partner');
+        } else if (this.driverType === 'lsp') {
+          this.$router.push('/lspdriver');
+        }
+      },
+    },
+  };
 </script>

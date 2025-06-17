@@ -6,9 +6,9 @@
       </v-card-title>
       <v-card-text>
         <!-- <p class="text-center text-h6">เลือกประเภทผู้ใช้</p> -->
-        <v-row class="text-center   ">
+        <v-row class="text-center">
           <v-col class="align-center justify-center" cols="12" md="6">
-            <v-card class="text-center  mt-16 " flat>
+            <v-card class="text-center mt-16" flat>
               <v-img class="my-img" src="@/assets/img/Location search-amico 1.svg" />
               <p class="pa-2">คุณเป็นเจ้าของธุรกิจ</p>
               <h1>ผู้ให้บริการโลจิสติกส์</h1>
@@ -19,7 +19,7 @@
               <v-card-text class="ma-4">
                 <div class="text-start">
                   <h2>สมัครสมาชิก</h2>
-                  <p>เจ้าของสินค้า เพื่อจองใช้รถขนส่ง</p>
+                  <p>สำหรับผู้ให้บริการโลจิสติกส์</p>
                 </div>
                 <v-divider class="mt-2 mb-4" />
                 <div>
@@ -120,6 +120,7 @@
                         rounded="lg"
                         size="x-large"
                         text="ลงทะเบียน"
+                        @click="register"
                       />
                     </v-col>
                   </v-row>
@@ -132,9 +133,24 @@
     </v-card>
   </v-container>
 </template>
-<style>
+
+<script>
+
+  export default {
+    data () {
+      return {};
+    },
+    methods: {
+      register () {
+        this.$router.push('/partner');
+      },
+    },
+  };
+</script>
+
+<style scoped>
 .my-img {
   margin-top: 150px; /* ขยับลง */
   margin-bottom: 10px;
-  /* transform: translateY(10px); */
-}</style>
+}
+</style>

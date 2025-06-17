@@ -7,6 +7,7 @@
           color="primary"
           height="180"
           rounded="lg"
+          @click="navigate('จองรถ')"
         >
           <v-card-title
             class="d-flex flex-column flex-sm-row align-center justify-center text-center ma-4"
@@ -26,14 +27,20 @@
         md="6"
         sm="6"
       >
-        <v-card class="pa-4" elevation="0" flat rounded="lg">
+        <v-card
+          class="pa-4"
+          elevation="0"
+          flat
+          rounded="lg"
+          @click="navigate(item.title)"
+        >
           <v-card-text>
             <v-row>
-              <v-col class="d-flex  align-center justify-center" cols="12" md="4">
+              <v-col class="d-flex align-center justify-center" cols="12" md="4">
                 <v-icon size="60">{{ item.icon }}</v-icon>
               </v-col>
-              <v-col class="d-flex  align-center justify-start" cols="12" md="8">
-                <p class=" text-h4 font-weight-medium">{{ item.title }}</p>
+              <v-col class="d-flex align-center justify-start" cols="12" md="8">
+                <p class="text-h4 font-weight-medium">{{ item.title }}</p>
               </v-col>
             </v-row>
           </v-card-text>
@@ -43,11 +50,38 @@
   </v-container>
 </template>
 
-<script setup>
-  const cardItems = [
-    { title: 'ติดตามสินค้า', icon: 'mdi-package-variant' },
-    { title: 'ชำระเงิน', icon: 'mdi-credit-card' },
-    { title: 'ประวัติการจอง', icon: 'mdi-history' },
-    { title: 'เช็ครถว่าง', icon: 'mdi-truck-check' },
-  ];
+<script>
+  export default {
+    data () {
+      return {
+        cardItems: [
+          { title: 'ติดตามสินค้า', icon: 'mdi-package-variant' },
+          { title: 'ชำระเงิน', icon: 'mdi-credit-card' },
+          { title: 'ประวัติการจอง', icon: 'mdi-history' },
+          { title: 'เช็ครถว่าง', icon: 'mdi-truck-check' },
+        ],
+      };
+    },
+    methods: {
+      navigate (title) {
+        switch (title) {
+          case 'จองรถ':
+            this.$router.push('/user/booking');
+            break;
+          case 'ติดตามสินค้า':
+            this.$router.push('/user/tracking');
+            break;
+          case 'ชำระเงิน':
+            this.$router.push('/user/payment');
+            break;
+          case 'ประวัติการจอง':
+            this.$router.push('/user/history');
+            break;
+          case 'เช็ครถว่าง':
+            this.$router.push('/user/checkcar');
+            break;
+        }
+      },
+    },
+  };
 </script>

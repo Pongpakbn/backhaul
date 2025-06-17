@@ -234,7 +234,7 @@
                   color="white"
                   size="small"
                   variant="flat"
-                  @click="bookCar(item)"
+                  @click="$router.push('/user/job')"
                 >
                   <span style="color: #005eb8; font-weight: bold;">จองทันที</span>
                 </v-btn>
@@ -370,11 +370,6 @@
             clearInterval(this.interval);
           }
         }, 1000);
-      },
-      bookCar (item) {
-        console.log('Booking car:', item);
-        this.showDialog = false;
-      // Add your booking logic here
       },
     },
   };

@@ -8,7 +8,7 @@
         <!-- <p class="text-center text-h6">เลือกประเภทผู้ใช้</p> -->
         <v-row class="text-center">
           <v-col class="align-center justify-center" cols="12" md="6">
-            <v-card class="text-center mt-16 " flat>
+            <v-card class="text-center mt-16" flat>
               <v-img src="@/assets/img/Checking boxes-amico.png" />
               <p class="pa-2">คุณเป็นเจ้าของสินค้า</p>
               <h1>สมัครเพื่อจองรถ</h1>
@@ -93,6 +93,7 @@
                         rounded="lg"
                         size="x-large"
                         text="ลงทะเบียน"
+                        @click="register"
                       />
                     </v-col>
                   </v-row>
@@ -105,3 +106,16 @@
     </v-card>
   </v-container>
 </template>
+
+<script>
+  export default {
+    data () {
+      return {};
+    },
+    methods: {
+      register () {
+        this.$router.push('/user');
+      },
+    },
+  };
+</script>

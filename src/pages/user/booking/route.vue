@@ -52,7 +52,7 @@
                   <v-card
                     class="me-2 ma-2"
                     :color="isSelected ? 'primary' : undefined"
-                    elevation="3"
+                    elevation="1"
                     rounded="lg"
                     @click="toggle"
                   >
@@ -152,6 +152,7 @@
                   color="primary"
                   size="x-large"
                   text="ยืนยันการจอง"
+                  @click="$router.push('/user/booking/matching')"
                 />
               </v-col>
             </v-row>

@@ -52,14 +52,13 @@
               <v-col cols="12"><p>ประเภทสินค้า : สินค้าทั่วไป</p></v-col>
               <v-col cols="12"><p>ขนาดสินค้า : 20x20x20</p></v-col>
               <v-col cols="12"><p>ตัวเลือกขนส่ง : ราคาที่ระบบแนะนำ</p></v-col>
-
               <v-col class="d-flex justify-cente align-center ga-2"><b>วงเงินประกัน 3,000 บาท + วงเงินประกันซื้อเพิ่ม  </b><v-icon color="primary" @click="dialog_insurance = true">mdi-help-circle-outline</v-icon></v-col>
             </v-row>
           </v-col>
           <!-- ฝั่งขวา -->
           <v-col cols="12" md="6">
             <v-row dense>
-              <v-col class="d-flex align-center ga-2" cols="12"><p>ผู้ให้บริการ : Triple SSS</p><v-icon color="primary" @click="dialog_delivery =true">mdi-help-circle-outline</v-icon> </v-col>
+              <v-col class="d-flex align-center ga-2" cols="12"><p>ผู้ให้บริการ : Triple SSS</p><v-icon color="primary" @click="dialog_delivery = true">mdi-help-circle-outline</v-icon></v-col>
               <v-col cols="12">
                 <p>ป้ายทะเบียน : รถ 4 ล้อ(ตู้ทึบปกติ)</p>
               </v-col>
@@ -72,14 +71,13 @@
                       text-decoration: underline;
                       cursor: pointer;
                     "
-                    @click="dialog = true"
+                    @click="openLocationDialog(item)"
                   >รายละเอียดจุดรับ - ส่ง</span>
                 </p>
               </v-col>
               <v-col cols="12">
                 <p>ระยะทาง : 920 กม.</p>
               </v-col>
-
             </v-row>
           </v-col>
           <v-col cols="12" md="6">
@@ -215,9 +213,8 @@
         <p>ชื่อบริษัทประกัน: วิริยะประกันภัย จำกัด (มหาชน)</p>
         <p>หมายเลขกรมธรรม์: VY-TRK-2024-001234</p>
         <p>วันเริ่มต้นและสิ้นสุดการประกันภัย: 1 มกราคม 2568 – 31 ธันวาคม 2568</p>
-        <p>ความคุ้มครอง: คุ้มครองความเสียหายต่อรถ ความเสียหายต่อทรัพย์สินบุคคลภายนอก และอุบัติเหตุส่วนบุคคล</p><p>
-          เงื่อนไขการชดเชย: ค่าซ่อมตามจริงไม่เกินทุนประกัน, ค่ารักษาพยาบาลสูงสุด 100,000 บาทต่อครั้ง
-        </p>
+        <p>ความคุ้มครอง: คุ้มครองความเสียหายต่อรถ ความเสียหายต่อทรัพย์สินบุคคลภายนอก และอุบัติเหตุส่วนบุคคล</p>
+        <p>เงื่อนไขการชดเชย: ค่าซ่อมตามจริงไม่เกินทุนประกัน, ค่ารักษาพยาบาลสูงสุด 100,000 บาทต่อครั้ง</p>
         <v-divider class="mt-4 mb-4" />
         <h3>ข้อมูลการประกันขณะขนส่งสินค้า</h3>
         <p>หมายเลขกรมธรรม์ขนส่งสินค้า: VY-GOODS-2024-007890</p>
@@ -229,11 +226,10 @@
             color="primary"
             size="large"
             text="รับทราบ"
-            @click="dialog_insurance = close"
+            @click="dialog_insurance = false"
           />
         </div>
       </v-card-text>
-
     </v-card>
   </v-dialog>
   <!-- dialog_delivery -->
@@ -257,15 +253,12 @@
         <v-divider class="mt-4 mb-4" />
         <h3>ระยะเวลารับประกัน</h3>
         <li>รับประกันสินค้านาน 12 เดือน นับจากวันที่ซื้อสินค้า</li>
-
         <h3>เงื่อนไขการรับประกัน</h3>
         <li>รับประกันเฉพาะกรณีที่เกิดจากความผิดพลาดของผู้ผลิต เช่น วัสดุชำรุด อุปกรณ์ไม่ทำงาน</li>
         <li>ไม่ครอบคลุมความเสียหายที่เกิดจากการใช้งานผิดวิธี, ความชื้น, อุบัติเหตุ หรือการแก้ไขซ่อมแซมโดยไม่ได้รับอนุญาต</li>
-
         <h3>ขั้นตอนการเคลมสินค้า</h3>
         <li>ติดต่อฝ่ายบริการลูกค้า พร้อมแนบใบเสร็จและรูปภาพสินค้าที่มีปัญหา</li>
         <li>บริษัทฯ จะทำการตรวจสอบ และแจ้งผลภายใน 3–7 วันทำการ</li>
-
         <h3>กรณีที่ไม่สามารถเคลมได้</h3>
         <li>สินค้ามีร่องรอยการแกะหรือดัดแปลง</li>
         <li>หมดระยะเวลารับประกัน</li>
@@ -276,10 +269,45 @@
             color="primary"
             size="large"
             text="รับทราบ"
-            @click="dialog_delivery = close"
+            @click="dialog_delivery = false"
           />
         </div>
       </v-card-text>
+    </v-card>
+  </v-dialog>
+  <!-- dialog for pickup and dropoff details -->
+  <v-dialog v-model="dialog" max-width="600px">
+    <v-card>
+      <v-card-title class="bg-primary text-white text-h6 d-flex align-center justify-space-between">
+        <p>รายละเอียดจุดรับ - ส่ง</p>
+        <v-btn icon variant="text" @click="dialog = false">
+          <v-icon>mdi-close</v-icon>
+        </v-btn>
+      </v-card-title>
+      <v-card-text>
+        <v-timeline align="start" density="compact" side="end" truncate-line="both">
+          <v-timeline-item
+            v-for="(location, index) in selectedBooking?.locations || []"
+            :key="index"
+            :color="getTimelineColor(location.type)"
+            size="small"
+            width="100%"
+          >
+            <template #icon>
+              <v-avatar :color="getTimelineColor(location.type)" size="27" />
+            </template>
+            <div>
+              <div class="font-weight-medium">{{ location.label }}</div>
+              <div class="text-subtitle text-grey-darken-1">{{ location.address }}</div>
+              <div style="color: #005eb8">{{ location.date }}</div>
+            </div>
+          </v-timeline-item>
+        </v-timeline>
+      </v-card-text>
+      <v-card-actions>
+        <v-spacer />
+        <v-btn text @click="dialog = false">ปิด</v-btn>
+      </v-card-actions>
     </v-card>
   </v-dialog>
 </template>
@@ -288,52 +316,81 @@
   export default {
     data () {
       return {
-        dialog_insurance:false,
-        dialog_delivery:false,
+        dialog_insurance: false,
+        dialog_delivery: false,
         selectunit: null,
-        allBookings: [
-          {
-            id: '#BH4334513',
-            from: 'สงขลา',
-            to: 'สมุทรปราการ',
-            status: 'confirm', // 0: ที่ต้องยืนยัน
-          },
-          {
-            id: '#BH4334514',
-            from: 'ชลบุรี',
-            to: 'กรุงเทพฯ',
-            status: 'pay', // 1: ที่ต้องชำระ
-          },
-          {
-            id: '#BH4334515',
-            from: 'เชียงใหม่',
-            to: 'ขอนแก่น',
-            status: 'paid', // 2: ชำระแล้ว
-          },
-        ],
         dialog: false,
         offer: true,
         selectradio: 'one',
         dialog_cancle: false,
         activeTab: 0,
-        locations: [
+        selectedBooking: null,
+        allBookings: [
           {
-            type: 'pickup',
-            label: 'จุดรับสินค้า',
-            address: '123 ถนนสุขุมวิท เขตคลองเตย กรุงเทพฯ 10110',
-            date: 'รับสินค้า : 5 มกราคม 2568 10:00 น. - 12:00 น. ',
+            id: '#BH4334513',
+            from: 'สงขลา',
+            to: 'สมุทรปราการ',
+            status: 'confirm',
+            locations: [
+              {
+                type: 'pickup',
+                label: 'จุดรับสินค้า',
+                address: '123 ถนนสุขุมวิท เขตคลองเตย กรุงเทพฯ 10110',
+                date: 'รับสินค้า : 5 มกราคม 2568 10:00 น. - 12:00 น.',
+              },
+              {
+                type: 'dropoff',
+                label: 'จุดส่งสินค้า',
+                address: '456 ถนนพระราม 2 เขตบางขุนเทียน กรุงเทพฯ 10150',
+                date: 'ส่งสินค้า : 6 มกราคม 2568 14:00 น. - 16:00 น.',
+              },
+            ],
           },
           {
-            type: 'dropoff',
-            label: 'จุดส่งสินค้า',
-            address: '456 ถนนพระราม 2 เขตบางขุนเทียน กรุงเทพฯ 10150',
-            date: 'รับสินค้า : 5 มกราคม 2568 10:00 น. - 12:00 น. ',
+            id: '#BH4334514',
+            from: 'ชลบุรี',
+            to: 'กรุงเทพฯ',
+            status: 'pay',
+            locations: [
+              {
+                type: 'pickup',
+                label: 'จุดรับสินค้า',
+                address: '789 ถนนบางนา-ตราด บางนา ชลบุรี 20150',
+                date: 'รับสินค้า : 7 มกราคม 2568 09:00 น. - 11:00 น.',
+              },
+              {
+                type: 'dropoff',
+                label: 'จุดส่งสินค้า',
+                address: '101 ถนนสีลม สาทร กรุงเทพฯ 10500',
+                date: 'ส่งสินค้า : 7 มกราคม 2568 15:00 น. - 17:00 น.',
+              },
+            ],
           },
           {
-            type: 'dropoff',
-            label: 'จุดส่งสินค้า 2',
-            address: '789 ถนนแจ้งวัฒนะ เขตหลักสี่ กรุงเทพฯ 10210',
-            date: 'รับสินค้า : 5 มกราคม 2568 10:00 น. - 12:00 น. ',
+            id: '#BH4334515',
+            from: 'เชียงใหม่',
+            to: 'ขอนแก่น',
+            status: 'paid',
+            locations: [
+              {
+                type: 'pickup',
+                label: 'จุดรับสินค้า',
+                address: '321 ถนนช้างม่อย เมืองเชียงใหม่ เชียงใหม่ 50000',
+                date: 'รับสินค้า : 8 มกราคม 2568 08:00 น. - 10:00 น.',
+              },
+              {
+                type: 'dropoff',
+                label: 'จุดส่งสินค้า',
+                address: '654 ถนนมิตรภาพ เมืองขอนแก่น ขอนแก่น 40000',
+                date: 'ส่งสินค้า : 9 มกราคม 2568 12:00 น. - 14:00 น.',
+              },
+              {
+                type: 'dropoff',
+                label: 'จุดส่งสินค้า 2',
+                address: '987 ถนนศรีจันทร์ เมืองขอนแก่น ขอนแก่น 40000',
+                date: 'ส่งสินค้า : 9 มกราคม 2568 14:00 น. - 16:00 น.',
+              },
+            ],
           },
         ],
       };
@@ -357,23 +414,22 @@
         return 'ดำเนินการ';
       },
       handleAction (item) {
-        if (item.status === 'confirm') {
-          // กรณียืนยันและชำระเงิน
-          console.log('ยืนยันและชำระเงิน', item.id);
-          this.dialog = true; // หรือเปิด dialog ชำระเงิน
-        } else if (item.status === 'pay') {
-          // ชำระเงินอย่างเดียว
-          console.log('ชำระเงิน', item.id);
-          this.dialog = true;
+        if (item.status === 'confirm' || item.status === 'pay') {
+          // Navigate to payment page for confirm or pay status
+          this.$router.push(`/user/payment/id`);
         } else if (item.status === 'paid') {
-          // ไปหน้าดูรายละเอียด
-          console.log('ดูรายละเอียด', item.id);
-          // เช่น: this.$router.push(`/payment/${item.id}`)
+          // Navigate to tracking page for paid status
+          this.$router.push(`/user/tracking/id`);
         }
+      },
+      openLocationDialog (item) {
+        this.selectedBooking = item;
+        this.dialog = true;
       },
     },
   };
 </script>
+
 <style>
 .selected-pickup {
   background-color: #005eb8 !important;
