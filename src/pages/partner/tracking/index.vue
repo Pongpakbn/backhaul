@@ -7,9 +7,15 @@
       :items="items"
       :items-per-page="5"
     >
-      <template #[`item.action`]="{ item }">
-        <!-- <v-btn color="primary" prepend-icon="mdi-tag-outline" text="รายละเอียด" @click="$router.push(`/partner/tracking/id`)" /> -->
-        <v-btn color="primary" prepend-icon="mdi-tag-outline" text="รายละเอียด" @click="$router.push(`/partner/tracking/${item.id}`)" />
+      <template #[`item.action`]>
+        <v-btn
+          color="primary"
+          flat
+          prepend-icon="mdi-tag-outline"
+          text="รายละเอียด"
+          @click="$router.push(`/partner/tracking/id`)"
+        />
+        <!-- <v-btn color="primary" prepend-icon="mdi-tag-outline" text="รายละเอียด" @click="$router.push(`/partner/tracking/${item.id}`)" /> -->
       </template>
     </v-data-table>
   </v-card>

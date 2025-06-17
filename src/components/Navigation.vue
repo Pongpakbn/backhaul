@@ -15,7 +15,7 @@
     </v-card>
     <v-list color="primary" nav>
       <v-list-item
-        v-for="(item, index) in menu_user"
+        v-for="(item, index) in menu_partner"
         :key="index"
         :active="$route.path === item.route"
         :prepend-icon="item.icon"

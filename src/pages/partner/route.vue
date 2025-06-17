@@ -62,7 +62,7 @@
                 prepend-icon="mdi-update"
                 style="background-color: #f2a900; color: white;"
                 text="อัพเดทข้อมูล"
-                @click="$router.push(`/partner/booking/${item.id}`)"
+                @click="openDialog(item)"
               />
             </v-col>
             <v-col class="text-start">
@@ -75,7 +75,6 @@
               />
             </v-col>
           </v-row>
-
         </template>
       </v-data-table>
     </v-card>
@@ -122,8 +121,10 @@
                 <v-col cols="12" md="6">
                   <p>ชื่อคนขับ</p>
                   <v-select
+                    v-model="planData.driverName"
                     density="comfortable"
                     hide-details
+                    :items="drivers"
                     placeholder="เลือกคนขับ"
                     rounded="lg"
                     variant="outlined"
@@ -132,16 +133,22 @@
                 <v-col cols="12" md="6">
                   <p>รถ</p>
                   <v-select
+                    v-model="planData.vehicleId"
                     density="comfortable"
                     hide-details
+                    item-title="name"
+                    item-value="id"
+                    :items="vehicles"
                     placeholder="เลือกรถ"
                     rounded="lg"
                     variant="outlined"
+                    @update:model-value="updateVehicleDetails"
                   />
                 </v-col>
                 <v-col cols="12" md="6">
                   <p>จุดเริ่มต้น</p>
                   <v-text-field
+                    v-model="planData.startPoint"
                     density="comfortable"
                     hide-details
                     placeholder="จุดเริ่มต้น"
@@ -153,9 +160,10 @@
                 <v-col cols="12" md="6">
                   <p>จุดสิ้นสุด</p>
                   <v-text-field
+                    v-model="planData.endPoint"
                     density="comfortable"
                     hide-details
-                    placeholder="เลือกรถ"
+                    placeholder="จุดสิ้นสุด"
                     rounded="lg"
                     variant="outlined"
                     @click="starpoint = true"
@@ -164,9 +172,9 @@
                 <v-col cols="12" md="6">
                   <p>วันที่ออกเดินทาง</p>
                   <v-date-input
+                    v-model="planData.startDate"
                     density="comfortable"
                     hide-details
-                    multiple="range"
                     rounded="lg"
                     variant="outlined"
                   />
@@ -174,9 +182,9 @@
                 <v-col cols="12" md="6">
                   <p>วันที่สิ้นสุดการเดินทาง</p>
                   <v-date-input
+                    v-model="planData.endDate"
                     density="comfortable"
                     hide-details
-                    multiple="range"
                     rounded="lg"
                     variant="outlined"
                   />
@@ -507,8 +515,8 @@
     </v-dialog>
   </v-container>
 </template>
-
 <script>
+  import Swal from 'sweetalert2';
   import { VDateInput } from 'vuetify/labs/VDateInput';
   import Addaddress from '@/components/Track.vue';
 
@@ -646,16 +654,45 @@
       },
     },
     methods: {
-      openDialog () {
+      openDialog (item = null) {
+        console.log('openDialog called', item);
         this.currentStep = 0;
         this.resetForm();
+        if (item && item.vehicleInfo) { // เพิ่มการตรวจสอบ item.vehicleInfo
+          console.log('Editing item:', item);
+          this.planData.id = item.id;
+          this.planData.driverName = item.driverName;
+          this.planData.status = item.status;
+          const vehicle = this.vehicles.find(v => item.vehicleInfo.includes(v.plate));
+          if (vehicle) {
+            this.planData.vehicleId = vehicle.id;
+            this.planData.vehicleType = vehicle.type;
+            this.planData.registrationPlate = vehicle.plate;
+          } else {
+            console.warn('No matching vehicle found for vehicleInfo:', item.vehicleInfo);
+          }
+          try {
+            const [start, end] = item.dateRange.split(' - ');
+            const startDateStr = start.replace('เริ่ม: ', '').split('/').map(Number);
+            const endDateStr = end.replace('สิ้นสุด: ', '').split('/').map(Number);
+            this.planData.startDate = new Date(startDateStr[2] - 543, startDateStr[1] - 1, startDateStr[0]);
+            this.planData.endDate = new Date(endDateStr[2] - 543, endDateStr[1] - 1, endDateStr[0]);
+          } catch (e) {
+            console.error('Error parsing dateRange:', item.dateRange, e);
+          }
+          this.planData.startPoint = `จุดเริ่มต้นของ ${item.driverName}`;
+          this.planData.endPoint = `จุดสิ้นสุดของ ${item.driverName}`;
+        }
         this.dialog = true;
+        console.log('Dialog set to:', this.dialog);
       },
       closeDialog () {
+        console.log('closeDialog called');
         this.dialog = false;
         this.resetForm();
       },
       resetForm () {
+        console.log('resetForm called');
         this.planData = {
           id: null,
           startPoint: '',
@@ -693,6 +730,7 @@
         this.summaryData = { overallCondition: '', overallConditionDetails: '' };
       },
       updateVehicleDetails (vehicleId) {
+        console.log('updateVehicleDetails called with vehicleId:', vehicleId);
         const vehicle = this.vehicles.find(v => v.id === vehicleId);
         if (vehicle) {
           this.planData.vehicleType = vehicle.type;
@@ -700,6 +738,7 @@
         }
       },
       nextStep () {
+        console.log('nextStep called, currentStep:', this.currentStep);
         if (this.currentStep < 10) {
           this.currentStep++;
         } else {
@@ -707,6 +746,7 @@
         }
       },
       prevStep () {
+        console.log('prevStep called, currentStep:', this.currentStep);
         if (this.currentStep > 0) {
           this.currentStep--;
         }
@@ -735,6 +775,7 @@
         return { color: 'grey', textColor: 'grey' };
       },
       savePlan () {
+        console.log('savePlan called');
         if (
           this.planData.startPoint &&
           this.planData.endPoint &&
@@ -782,11 +823,29 @@
           this.resetForm();
         }
       },
-      cancelPlan (item) {
-        if (confirm(`คุณแน่ใจหรือไม่ที่จะยกเลิกแผนของ ${item.driverName}?`)) {
+      async cancelPlan (item) {
+        console.log('cancelPlan called for item:', item);
+        const result = await Swal.fire({
+          title: 'คุณแน่ใจหรือไม่?',
+          text: `คุณต้องการยกเลิกแผนของ ${item.driverName} หรือไม่?`,
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#d33',
+          cancelButtonColor: '#3085d6',
+          confirmButtonText: 'ใช่, ยกเลิก!',
+          cancelButtonText: 'ไม่, ยกเลิกการดำเนินการ',
+        });
+
+        if (result.isConfirmed) {
           const index = this.items.findIndex(i => i.id === item.id);
           if (index !== -1) {
             this.items[index].status = 'ยกเลิกแผน';
+            Swal.fire({
+              title: 'ยกเลิกสำเร็จ!',
+              text: `แผนของ ${item.driverName} ถูกยกเลิกเรียบร้อยแล้ว`,
+              icon: 'success',
+              confirmButtonText: 'ตกลง',
+            });
           }
         }
       },
@@ -800,7 +859,6 @@
     },
   };
 </script>
-
 <style scoped>
 .rounded-md {
   border-radius: 8px;

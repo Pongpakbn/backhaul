@@ -1,7 +1,7 @@
 <template>
   <v-container>
-    <v-card class="mb-2 pa-0" flat>
-      <v-card-title class="ma-2 d-flex justify-space-between">
+    <v-card class="mb-2 pl-0" flat>
+      <v-card-title class="ma-2 pl-0 d-flex justify-space-between">
         <v-btn prepend-icon="mdi-chevron-left" text="ย้อนกลับ" variant="text" @click="$router.push('/partner/tracking')" />
       </v-card-title>
     </v-card>

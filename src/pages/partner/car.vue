@@ -715,6 +715,8 @@
 </template>
 
 <script>
+  import Swal from 'sweetalert2';
+
   export default {
     data () {
       return {
@@ -815,7 +817,6 @@
             cargoCoveragePeriod: '01/01/2025-31/12/2025',
             status: 'ส่งกลับเพื่อแก้ไข',
           },
-        // Other items omitted for brevity
         ],
         newVehicle: {
           index: null,
@@ -957,9 +958,26 @@
         this.bodyData = { bodyCondition: '', bodyConditionDetails: '' };
         this.summaryData = { overallCondition: '', overallConditionDetails: '' };
       },
-      deleteVehicle (item) {
-        if (confirm(`คุณแน่ใจหรือไม่ที่จะลบ ${item.registrationPlate}?`)) {
+      async deleteVehicle (item) {
+        const result = await Swal.fire({
+          title: 'คุณแน่ใจหรือไม่?',
+          text: `คุณต้องการลบรถที่มีป้ายทะเบียน ${item.registrationPlate} หรือไม่? การกระทำนี้ไม่สามารถย้อนกลับได้!`,
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#d33',
+          cancelButtonColor: '#3085d6',
+          confirmButtonText: 'ใช่, ลบเลย!',
+          cancelButtonText: 'ยกเลิก',
+        });
+
+        if (result.isConfirmed) {
           this.items = this.items.filter(i => i.index !== item.index);
+          Swal.fire({
+            title: 'ลบสำเร็จ!',
+            text: `รถที่มีป้ายทะเบียน ${item.registrationPlate} ถูกลบออกจากระบบแล้ว`,
+            icon: 'success',
+            confirmButtonText: 'ตกลง',
+          });
         }
       },
       nextStep () {
@@ -996,89 +1014,132 @@
         return { color: 'grey', textColor: 'grey' };
       },
       saveVehicle () {
-        if (
-          this.newVehicle.vehicleType &&
-          this.newVehicle.registrationPlate &&
-          this.newVehicle.brand &&
-          this.newVehicle.model &&
-          this.newVehicle.manufactureYear &&
-          this.newVehicle.engineSize &&
-          this.newVehicle.cargoCapacity &&
-          this.newVehicle.taxExpiry &&
-          this.newVehicle.insuranceExpiry &&
-          this.newVehicle.rate &&
-          this.newVehicle.ownerName &&
-          this.newVehicle.phoneNumber &&
-          this.newVehicle.address &&
-          this.newVehicle.driverLicenseType &&
-          this.newVehicle.driverLicenseNumber &&
-          this.newVehicle.driverLicenseExpiry &&
-          this.newVehicle.insuranceCompany &&
-          this.newVehicle.policyNumber &&
-          this.newVehicle.insurancePeriod &&
-          this.newVehicle.coverage &&
-          this.newVehicle.compensationTerms &&
-          this.newVehicle.cargoPolicyNumber &&
-          this.newVehicle.cargoCoverage &&
-          this.newVehicle.cargoCoveragePeriod
-        ) {
-          if (!this.newVehicle.index) {
-            const newIndex = this.items.length + 1;
-            this.items.push({ ...this.newVehicle, index: newIndex });
-          } else {
-            const itemIndex = this.items.findIndex(i => i.index === this.newVehicle.index);
-            if (itemIndex !== -1) {
-              this.items[itemIndex] = { ...this.newVehicle };
-            }
+        this.dialog=false
+        const requiredFields = [
+          { key: 'vehicleType', label: 'ประเภทรถ' },
+          { key: 'registrationPlate', label: 'ป้ายทะเบียน' },
+          { key: 'brand', label: 'ยี่ห้อ' },
+          { key: 'model', label: 'รุ่น' },
+          { key: 'manufactureYear', label: 'ปีที่ผลิต' },
+          { key: 'engineSize', label: 'ขนาดเครื่องยนต์' },
+          { key: 'cargoCapacity', label: 'ขนาดบรรทุก' },
+          { key: 'taxExpiry', label: 'วันหมดอายุภาษีรถ' },
+          { key: 'insuranceExpiry', label: 'วันหมดอายุพรบ' },
+          { key: 'rate', label: 'เรทราคา' },
+          { key: 'ownerName', label: 'ชื่อเจ้าของรถ' },
+          { key: 'phoneNumber', label: 'เบอร์โทรศัพท์' },
+          { key: 'address', label: 'ที่อยู่' },
+          { key: 'driverLicenseType', label: 'ประเภทใบขับขี่' },
+          { key: 'driverLicenseNumber', label: 'เลขใบขับขี่' },
+          { key: 'driverLicenseExpiry', label: 'วันหมดอายุใบขับขี่' },
+          { key: 'insuranceCompany', label: 'ชื่อบริษัทประกัน' },
+          { key: 'policyNumber', label: 'หมายเลขกรมธรรม์' },
+          { key: 'insurancePeriod', label: 'วันเริ่มต้นและสิ้นสุดการประกันภัย' },
+          { key: 'coverage', label: 'ความคุ้มครอง' },
+          { key: 'compensationTerms', label: 'เงื่อนไขการชดเชย' },
+          { key: 'cargoPolicyNumber', label: 'หมายเลขกรมธรรม์สินค้า' },
+          { key: 'cargoCoverage', label: 'ความคุ้มครองประกันสินค้า' },
+          { key: 'cargoCoveragePeriod', label: 'ระยะเวลาในการคุ้มครองสินค้า' },
+        ];
+
+        const missingFields = requiredFields
+          .filter(field => !this.newVehicle[field.key])
+          .map(field => field.label);
+
+        if (missingFields.length > 0) {
+          Swal.fire({
+            title: 'ข้อมูลไม่ครบถ้วน',
+            text: `กรุณากรอกข้อมูลต่อไปนี้ให้ครบ: ${missingFields.join(', ')}`,
+            icon: 'warning',
+            confirmButtonText: 'ตกลง',
+          });
+          return false;
+        }
+
+        if (!this.newVehicle.index) {
+          const newIndex = this.items.length + 1;
+          this.items.push({ ...this.newVehicle, index: newIndex });
+        } else {
+          const itemIndex = this.items.findIndex(i => i.index === this.newVehicle.index);
+          if (itemIndex !== -1) {
+            this.items[itemIndex] = { ...this.newVehicle };
           }
         }
+        return true;
       },
-      saveAll () {
-        this.saveVehicle();
-        if (
-          this.brakeData.tankCondition &&
-          this.brakeData.clutchFluidLevel &&
-          this.brakeData.pipeCondition &&
-          this.brakeData.oilLevel &&
-          this.brakeData.pressureOperation &&
-          this.brakeData.leakOperation &&
-          this.electricityData.distilledWaterLevel &&
-          this.electricityData.headlightCondition &&
-          this.electricityData.taillightCondition &&
-          this.electricityData.turnSignalCondition &&
-          this.electricityData.batteryCondition &&
-          this.tireData.tireCondition &&
-          this.engineData.engineCondition &&
-          this.suspensionData.shockAbsorberCondition &&
-          this.bodyData.bodyCondition &&
-          this.summaryData.overallCondition
-        ) {
-          this.dialog = false;
-          this.resetNewVehicle();
-          this.brakeData = {
-            tankCondition: '',
-            clutchFluidLevel: '',
-            pipeCondition: '',
-            pipeConditionDetails: '',
-            oilLevel: '',
-            pressureOperation: '',
-            leakOperation: '',
-            leakOperationDetails: '',
-          };
-          this.electricityData = {
-            distilledWaterLevel: '',
-            headlightCondition: '',
-            taillightCondition: '',
-            turnSignalCondition: '',
-            batteryCondition: '',
-            batteryConditionDetails: '',
-          };
-          this.tireData = { tireCondition: '' };
-          this.engineData = { engineCondition: '', engineConditionDetails: '' };
-          this.suspensionData = { shockAbsorberCondition: '' };
-          this.bodyData = { bodyCondition: '', bodyConditionDetails: '' };
-          this.summaryData = { overallCondition: '', overallConditionDetails: '' };
+      async saveAll () {
+        const vehicleSaved = this.saveVehicle();
+        if (!vehicleSaved) return;
+
+        const requiredCheckFields = [
+          { key: 'brakeData.tankCondition', label: 'ระดับน้ำมันเบรก' },
+          { key: 'brakeData.clutchFluidLevel', label: 'ระดับน้ำมันคลัตช์' },
+          { key: 'brakeData.pipeCondition', label: 'รอยรั่วซึมตามจุดต่างๆ' },
+          { key: 'brakeData.oilLevel', label: 'ถังลม/การเครนที่ทิ้ง' },
+          { key: 'brakeData.pressureOperation', label: 'สายลม/จุดเชื่อมต่อ' },
+          { key: 'brakeData.leakOperation', label: 'เบรกมือ/เบรกจอด' },
+          { key: 'electricityData.distilledWaterLevel', label: 'ระดับน้ำกลั่น' },
+          { key: 'electricityData.headlightCondition', label: 'ระบบไฟหน้า' },
+          { key: 'electricityData.taillightCondition', label: 'ระบบไฟท้าย' },
+          { key: 'electricityData.turnSignalCondition', label: 'ระบบไฟเลี้ยว' },
+          { key: 'electricityData.batteryCondition', label: 'แบตเตอรี่' },
+          { key: 'tireData.tireCondition', label: 'สภาพยาง' },
+          { key: 'engineData.engineCondition', label: 'สภาพเครื่องยนต์' },
+          { key: 'suspensionData.shockAbsorberCondition', label: 'สภาพโช้คอัพ' },
+          { key: 'bodyData.bodyCondition', label: 'สภาพตัวถัง' },
+          { key: 'summaryData.overallCondition', label: 'ผลการตรวจสอบโดยรวม' },
+        ];
+
+        const missingCheckFields = requiredCheckFields
+          .filter(field => {
+            const [obj, key] = field.key.split('.');
+            return !this[obj][key];
+          })
+          .map(field => field.label);
+
+        if (missingCheckFields.length > 0) {
+          await Swal.fire({
+            title: 'ข้อมูลการตรวจสอบไม่ครบถ้วน',
+            text: `กรุณากรอกข้อมูลการตรวจสอบต่อไปนี้ให้ครบ: ${missingCheckFields.join(', ')}`,
+            icon: 'warning',
+            confirmButtonText: 'ตกลง',
+          });
+          return;
         }
+
+        // Save successful
+        this.dialog = false;
+        this.resetNewVehicle();
+        this.brakeData = {
+          tankCondition: '',
+          clutchFluidLevel: '',
+          pipeCondition: '',
+          pipeConditionDetails: '',
+          oilLevel: '',
+          pressureOperation: '',
+          leakOperation: '',
+          leakOperationDetails: '',
+        };
+        this.electricityData = {
+          distilledWaterLevel: '',
+          headlightCondition: '',
+          taillightCondition: '',
+          turnSignalCondition: '',
+          batteryCondition: '',
+          batteryConditionDetails: '',
+        };
+        this.tireData = { tireCondition: '' };
+        this.engineData = { engineCondition: '', engineConditionDetails: '' };
+        this.suspensionData = { shockAbsorberCondition: '' };
+        this.bodyData = { bodyCondition: '', bodyConditionDetails: '' };
+        this.summaryData = { overallCondition: '', overallConditionDetails: '' };
+
+        await Swal.fire({
+          title: 'บันทึกสำเร็จ!',
+          text: 'ข้อมูลรถและผลการตรวจสอบถูกบันทึกเรียบร้อยแล้ว',
+          icon: 'success',
+          confirmButtonText: 'ตกลง',
+        });
       },
       resetNewVehicle () {
         this.newVehicle = {

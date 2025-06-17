@@ -1,13 +1,12 @@
 <template>
   <v-container>
+    <!-- Header -->
     <v-row class="align-center mb-4">
-      <!-- ฝั่งซ้ายทั้งหมด -->
       <v-col class="d-flex align-center" cols="12" md="6">
         <div class="me-4">
           <h2 class="mb-1">คนขับรถ</h2>
           <p class="opacity-50 mb-0">{{ filteredItems.length }} รายการ</p>
         </div>
-
         <v-text-field
           v-model="search"
           density="compact"
@@ -22,7 +21,6 @@
         />
       </v-col>
 
-      <!-- อีกฝั่ง (ปุ่มเพิ่มคนขับรถ) -->
       <v-col cols="12" md="6">
         <div class="d-flex justify-end">
           <v-btn
@@ -31,11 +29,13 @@
             prepend-icon="mdi-account-plus"
             size="large"
             text="เพิ่มคนขับรถ"
-            @click="dialog = true"
+            @click="openAddDialog"
           />
         </div>
       </v-col>
     </v-row>
+
+    <!-- Table -->
     <v-card class="rounded-md" flat>
       <v-data-table
         class="elevation-1"
@@ -53,6 +53,7 @@
             {{ item.status }}
           </v-chip>
         </template>
+
         <template #[`item.action`]="{ item }">
           <v-row>
             <v-col class="text-end">
@@ -77,21 +78,11 @@
               />
             </v-col>
           </v-row>
-
-          <!-- <v-btn
-            class="me-2"
-            color="primary"
-            flat
-            prepend-icon="mdi-tag-outline"
-            text="แก้ไข"
-            @click="editDriver(item)"
-          /> -->
-          <!-- v-if="item.status !== 'ส่งกลับเพื่อแก้ไข'" -->
-
         </template>
       </v-data-table>
     </v-card>
 
+    <!-- Dialog -->
     <v-dialog v-model="dialog" width="800">
       <v-card>
         <v-card-title class="d-flex justify-space-between align-center">
@@ -104,7 +95,6 @@
               <p>ชื่อคนขับ</p>
               <v-text-field
                 v-model="newDriver.name"
-                density="comfortable"
                 hide-details
                 placeholder="ชื่อคนขับ"
                 rounded="md"
@@ -115,7 +105,6 @@
               <p>จังหวัด</p>
               <v-select
                 v-model="newDriver.province"
-                density="comfortable"
                 hide-details
                 :items="provinces"
                 placeholder="เลือกจังหวัด"
@@ -127,7 +116,6 @@
               <p>อำเภอ</p>
               <v-select
                 v-model="newDriver.district"
-                density="comfortable"
                 hide-details
                 :items="districts"
                 placeholder="เลือกอำเภอ"
@@ -139,7 +127,6 @@
               <p>ตำบล</p>
               <v-select
                 v-model="newDriver.subdistrict"
-                density="comfortable"
                 hide-details
                 :items="subdistricts"
                 placeholder="เลือกตำบล"
@@ -152,7 +139,6 @@
               <v-textarea
                 v-model="newDriver.address"
                 auto-grow
-                density="comfortable"
                 hide-details
                 placeholder="ที่อยู่"
                 rounded="md"
@@ -164,7 +150,6 @@
               <p>ประเภทใบขับขี่</p>
               <v-select
                 v-model="newDriver.licenseType"
-                density="comfortable"
                 hide-details
                 :items="licenseTypes"
                 placeholder="เลือกประเภทใบขับขี่"
@@ -176,7 +161,6 @@
               <p>เลขที่ใบขับขี่</p>
               <v-text-field
                 v-model="newDriver.licenseNumber"
-                density="comfortable"
                 hide-details
                 placeholder="เลขที่ใบขับขี่"
                 rounded="md"
@@ -187,7 +171,6 @@
               <p>วันหมดอายุใบขับขี่</p>
               <v-select
                 v-model="newDriver.licenseExpiry"
-                density="comfortable"
                 hide-details
                 :items="expiryDates"
                 placeholder="เลือกวันหมดอายุ"
@@ -199,10 +182,10 @@
               <p>อัปโหลดรูปภาพ</p>
               <v-file-input
                 v-model="newDriver.image"
-                density="comfortable"
+                hide-details
                 prepend-icon="mdi-camera"
                 rounded="lg"
-                title="กดเพื่อเลือกรูปภาพ (ขนาดไม่เกิน 20MB)"
+                title="กดเพื่อเลือกรูปภาพ"
                 variant="outlined"
               />
             </v-col>
@@ -223,11 +206,13 @@
 </template>
 
 <script>
+  import Swal from 'sweetalert2';
+
   export default {
     data () {
       return {
         dialog: false,
-        dialogMode: 'add', // 'add' or 'edit'
+        dialogMode: 'add',
         search: '',
         headers: [
           { title: '#', value: 'index', sortable: false },
@@ -241,45 +226,30 @@
           { index: 1, name: 'สมชาย ใจดี', licenseType: 'ใบขับขี่ชั่วคราว', licenseNumber: '123456789', status: 'รอการอนุมัติ' },
           { index: 2, name: 'สมหญิง ร่าเริง', licenseType: 'ใบขับขี่ส่วนบุคคล', licenseNumber: '987654321', status: 'อนุมัติ' },
           { index: 3, name: 'สมศักดิ์ มั่นคง', licenseType: 'ใบขับขี่สาธารณะ', licenseNumber: '456789123', status: 'ส่งกลับเพื่อแก้ไข' },
-          { index: 4, name: 'สมบูรณ์ ซื่อสัตย์', licenseType: 'ใบขับขี่ชั่วคราว', licenseNumber: '789123456', status: 'รอการอนุมัติ' },
         ],
         newDriver: {
-          index: null,
-          name: '',
-          province: null,
-          district: null,
-          subdistrict: null,
-          address: '',
-          licenseType: null,
-          licenseNumber: '',
-          licenseExpiry: null,
-          image: null,
+          index: null, name: '', province: null, district: null, subdistrict: null,
+          address: '', licenseType: null, licenseNumber: '', licenseExpiry: null, image: null,
         },
         provinces: ['กรุงเทพมหานคร', 'เชียงใหม่', 'ขอนแก่น', 'สงขลา'],
-        districts: ['เขตพระนคร', 'อำเภอเมือง', 'อำเภอเมือง', 'อำเภอเมือง'],
-        subdistricts: ['บางรัก', 'ช้างม่อย', 'เมือง', 'เมือง'],
+        districts: ['เขตพระนคร', 'อำเภอเมือง'],
+        subdistricts: ['บางรัก', 'เมือง'],
         licenseTypes: ['ใบขับขี่ชั่วคราว', 'ใบขับขี่ส่วนบุคคล', 'ใบขับขี่สาธารณะ'],
         expiryDates: ['15/06/2025', '15/12/2025', '15/06/2026', '15/12/2026'],
       };
     },
     computed: {
       filteredItems () {
-        return this.items.filter(item =>
-          item.name.toLowerCase().includes(this.search.toLowerCase())
-        );
+        return this.items.filter(item => item.name.toLowerCase().includes(this.search.toLowerCase()));
       },
     },
     methods: {
       getStatusColor (status) {
         switch (status) {
-          case 'รอการอนุมัติ':
-            return 'primary'; // Blue (#005eb8)
-          case 'อนุมัติ':
-            return 'success'; // Green (#4CAF50)
-          case 'ส่งกลับเพื่อแก้ไข':
-            return 'secondary'; // Orange (#f2a900)
-          default:
-            return 'grey'; // Default fallback
+          case 'รอการอนุมัติ': return 'primary';
+          case 'อนุมัติ': return 'success';
+          case 'ส่งกลับเพื่อแก้ไข': return 'secondary';
+          default: return 'grey';
         }
       },
       openAddDialog () {
@@ -289,90 +259,65 @@
       },
       openEditDialog (item) {
         this.dialogMode = 'edit';
-        this.newDriver = {
-          index: item.index,
-          name: item.name,
-          province: item.province || null,
-          district: item.district || null,
-          subdistrict: item.subdistrict || null,
-          address: item.address || '',
-          licenseType: item.licenseType,
-          licenseNumber: item.licenseNumber,
-          licenseExpiry: item.licenseExpiry || null,
-          image: null, // Reset image for edit
-        };
+        this.newDriver = { ...item, image: null };
         this.dialog = true;
       },
       closeDialog () {
         this.dialog = false;
         this.resetNewDriver();
       },
-      deleteDriver (item) {
-        if (confirm(`คุณแน่ใจหรือไม่ที่จะลบ ${item.name}?`)) {
+      async deleteDriver (item) {
+        const result = await Swal.fire({
+          title: `ลบ ${item.name}?`,
+          text: 'คุณแน่ใจหรือไม่ว่าต้องการลบข้อมูลคนขับนี้',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonText: 'ใช่, ลบเลย',
+          cancelButtonText: 'ยกเลิก',
+          confirmButtonColor: '#e53935',
+        });
+        if (result.isConfirmed) {
           this.items = this.items.filter(i => i.index !== item.index);
-          console.log('Driver deleted:', item);
+          Swal.fire('ลบแล้ว!', `${item.name} ถูกลบเรียบร้อย`, 'success');
         }
       },
       updateDriver (item) {
-        this.openEditDialog(item); // Reuse edit dialog for update
-      },
-      editDriver (item) {
         this.openEditDialog(item);
       },
-      saveDriver () {
-        if (this.newDriver.name && this.newDriver.licenseType && this.newDriver.licenseNumber && this.newDriver.licenseExpiry) {
+      async saveDriver () {
+        this.dialog=false
+        const { name, licenseType, licenseNumber, licenseExpiry } = this.newDriver;
+        if (name && licenseType && licenseNumber && licenseExpiry) {
           if (this.dialogMode === 'add') {
             const newIndex = this.items.length + 1;
             this.items.push({
+              ...this.newDriver,
               index: newIndex,
-              name: this.newDriver.name,
-              province: this.newDriver.province,
-              district: this.newDriver.district,
-              subdistrict: this.newDriver.subdistrict,
-              address: this.newDriver.address,
-              licenseType: this.newDriver.licenseType,
-              licenseNumber: this.newDriver.licenseNumber,
-              licenseExpiry: this.newDriver.licenseExpiry,
-              status: 'รอการอนุมัติ', // Default status for new drivers
-              image: this.newDriver.image ? this.newDriver.image.name : null,
+              status: 'รอการอนุมัติ',
+              image: this.newDriver.image?.name || null,
             });
-          } else if (this.dialogMode === 'edit') {
-            const itemIndex = this.items.findIndex(i => i.index === this.newDriver.index);
-            if (itemIndex !== -1) {
-              this.items[itemIndex] = {
-                index: this.newDriver.index,
-                name: this.newDriver.name,
-                province: this.newDriver.province,
-                district: this.newDriver.district,
-                subdistrict: this.newDriver.subdistrict,
-                address: this.newDriver.address,
-                licenseType: this.newDriver.licenseType,
-                licenseNumber: this.newDriver.licenseNumber,
-                licenseExpiry: this.newDriver.licenseExpiry,
-                status: this.items[itemIndex].status, // Retain original status
-                image: this.newDriver.image ? this.newDriver.image.name : this.items[itemIndex].image,
+          } else {
+            const idx = this.items.findIndex(i => i.index === this.newDriver.index);
+            if (idx !== -1) {
+              this.items[idx] = {
+                ...this.newDriver,
+                image: this.newDriver.image?.name || this.items[idx].image,
+                status: this.items[idx].status,
               };
             }
           }
           this.dialog = false;
+          Swal.fire('สำเร็จ!', 'บันทึกข้อมูลเรียบร้อยแล้ว', 'success');
           this.resetNewDriver();
-          console.log('Driver saved:', this.newDriver);
         } else {
-          console.log('Please fill all required fields');
+          Swal.fire('ไม่สำเร็จ', 'กรุณากรอกข้อมูลให้ครบถ้วน', 'error');
         }
       },
       resetNewDriver () {
         this.newDriver = {
-          index: null,
-          name: '',
-          province: null,
-          district: null,
-          subdistrict: null,
-          address: '',
-          licenseType: null,
-          licenseNumber: '',
-          licenseExpiry: null,
-          image: null,
+          index: null, name: '', province: null, district: null,
+          subdistrict: null, address: '', licenseType: null,
+          licenseNumber: '', licenseExpiry: null, image: null,
         };
       },
     },

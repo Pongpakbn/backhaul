@@ -109,11 +109,13 @@
 </template>
 
 <script>
+  import Swal from 'sweetalert2';
+
   export default {
     data () {
       return {
         dialog: false,
-        dialogMode: 'add', // 'add' or 'edit'
+        dialogMode: 'add',
         headers: [
           { title: '#', value: 'index', sortable: false },
           { title: 'ชื่อโปรไฟล์', value: 'profile' },
@@ -148,8 +150,8 @@
         this.newRate = {
           index: item.index,
           profile: item.profile,
-          price: item.price.replace(/[^\d]/g, ''), // Remove commas for editing
-          rate: item.rate.split('/')[0].replace(/[^\d]/g, ''), // Extract numeric part
+          price: item.price.replace(/[^\d]/g, ''),
+          rate: item.rate.split('/')[0].replace(/[^\d]/g, ''),
           distance: item.rate.split('/')[1],
         };
         this.dialog = true;
@@ -158,16 +160,36 @@
         this.dialog = false;
         this.resetNewRate();
       },
-      deleteRate (item) {
-        if (confirm(`คุณแน่ใจหรือไม่ที่จะลบ ${item.profile}?`)) {
+      async deleteRate (item) {
+        this.dialog=false
+        const result = await Swal.fire({
+          title: 'ยืนยันการลบ',
+          text: `คุณต้องการลบ "${item.profile}" หรือไม่?`,
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonText: 'ใช่, ลบเลย',
+          cancelButtonText: 'ยกเลิก',
+          confirmButtonColor: '#d33',
+          cancelButtonColor: '#3085d6',
+        });
+
+        if (result.isConfirmed) {
           this.items = this.items.filter(i => i.index !== item.index);
-          console.log('Rate deleted:', item);
+          await Swal.fire({
+            title: 'ลบแล้ว!',
+            text: `ลบเรทราคา "${item.profile}" สำเร็จ`,
+            icon: 'success',
+            timer: 1500,
+            showConfirmButton: false,
+          });
         }
       },
-      saveRate () {
+      async saveRate () {
+        this.dialog=false
         if (this.newRate.profile && this.newRate.price && this.newRate.rate && this.newRate.distance) {
           const price = parseInt(this.newRate.price.replace(/[^\d]/g, '')).toLocaleString();
           const rate = parseInt(this.newRate.rate.replace(/[^\d]/g, '')).toLocaleString();
+
           if (this.dialogMode === 'add') {
             const newIndex = this.items.length + 1;
             this.items.push({
@@ -176,7 +198,14 @@
               price,
               rate: `${rate}/${this.newRate.distance}`,
             });
+            await Swal.fire({
+              title: 'เพิ่มเรทราคาเรียบร้อย',
+              icon: 'success',
+              timer: 1500,
+              showConfirmButton: false,
+            });
           } else if (this.dialogMode === 'edit') {
+            this.dialog=false
             const itemIndex = this.items.findIndex(i => i.index === this.newRate.index);
             if (itemIndex !== -1) {
               this.items[itemIndex] = {
@@ -185,13 +214,24 @@
                 price,
                 rate: `${rate}/${this.newRate.distance}`,
               };
+              await Swal.fire({
+                title: 'แก้ไขเรทราคาเรียบร้อย',
+                icon: 'success',
+                timer: 1500,
+                showConfirmButton: false,
+              });
             }
           }
+
           this.dialog = false;
           this.resetNewRate();
-          console.log('Rate saved:', this.newRate);
         } else {
-          console.log('Please fill all fields');
+          this.dialog=false
+          Swal.fire({
+            title: 'กรอกข้อมูลไม่ครบ',
+            text: 'โปรดกรอกข้อมูลให้ครบทุกช่อง',
+            icon: 'error',
+          });
         }
       },
       resetNewRate () {
