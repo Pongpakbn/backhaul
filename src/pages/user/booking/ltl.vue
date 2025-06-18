@@ -110,9 +110,12 @@
 
     <v-dialog v-model="dialog" max-width="800px" transition="dialog-bottom-transition">
       <v-card>
-        <v-card-title>
-          <p>{{ isEditing ? 'แก้ไขสินค้า' : 'เพิ่มสินค้า' }}</p>
-        </v-card-title>
+        <v-card-title class="d-flex justify-space-between align-center">          <p>{{ isEditing ? 'แก้ไขสินค้า' : 'เพิ่มสินค้า' }}</p>
+          <v-btn
+            icon="mdi-close"
+            variant="text"
+            @click="dialog_sum = false"
+          /></v-card-title>
         <v-divider />
         <v-card-text>
           <v-form ref="form" v-model="valid" lazy-validation>
@@ -127,7 +130,7 @@
                 />
               </v-col>
               <v-col cols="12" md="6">
-                <h3>ความกว้าง (ซม.)</h3>
+                <p>ความกว้าง (ซม.)</p>
                 <v-text-field
                   v-model="form.width"
                   aria-label="ความกว้างของสินค้า"
@@ -142,7 +145,7 @@
                   type="number"
                   variant="outlined"
                 />
-                <h3>ความยาว (ซม.)</h3>
+                <p>ความยาว (ซม.)</p>
                 <v-text-field
                   v-model="form.length"
                   aria-label="ความยาวของสินค้า"
@@ -157,7 +160,7 @@
                   type="number"
                   variant="outlined"
                 />
-                <h3>ความสูง (ซม.)</h3>
+                <p>ความสูง (ซม.)</p>
                 <v-text-field
                   v-model="form.height"
                   aria-label="ความสูงของสินค้า"
@@ -172,7 +175,7 @@
                   type="number"
                   variant="outlined"
                 />
-                <h3>น้ำหนัก (กก.)</h3>
+                <p>น้ำหนัก (กก.)</p>
                 <v-text-field
                   v-model="form.weight"
                   aria-label="น้ำหนักของสินค้า"
@@ -187,7 +190,7 @@
                   type="number"
                   variant="outlined"
                 />
-                <h3>จำนวน (ชิ้น)</h3>
+                <p>จำนวน (ชิ้น)</p>
                 <v-text-field
                   v-model="form.amount"
                   aria-label="จำนวนสินค้า"
@@ -216,22 +219,13 @@
                   @update:model-value="handleImageUpload"
                 />
               </v-col>
-              <v-col class="d-flex justify-space-between" cols="12">
-                <v-btn
-                  aria-label="ยกเลิกการเพิ่มหรือแก้ไขสินค้า"
-                  color="grey"
-                  rounded="lg"
-                  size="x-large"
-                  text="ยกเลิก"
-                  variant="outlined"
-                  @click="dialog = false"
-                />
+              <v-col class="d-flex justify-end" cols="12">
                 <v-btn
                   aria-label="ยืนยันการเพิ่มหรือแก้ไขสินค้า"
                   color="primary"
                   :disabled="!valid"
-                  rounded="lg"
-                  size="x-large"
+                  flat
+                  size="large"
                   text="ยืนยัน"
                   @click="saveItem"
                 />
@@ -244,7 +238,11 @@
 
     <v-dialog v-model="dialog_sum" max-width="800px" transition="dialog-bottom-transition">
       <v-card>
-        <v-card-title>สรุปรายการ</v-card-title>
+        <v-card-title class="d-flex justify-space-between align-center">สรุปรายการ <v-btn
+          icon="mdi-close"
+          variant="text"
+          @click="dialog_sum = false"
+        /></v-card-title>
         <v-divider />
         <v-card-text>
           <v-row>
@@ -253,7 +251,7 @@
               <p><strong>น้ำหนักรวม:</strong> {{ totalWeight }} กก.</p>
             </v-col>
             <v-col cols="12">
-              <v-expansion-panels>
+              <v-expansion-panels variant="accordion">
                 <v-expansion-panel
                   v-for="(item, index) in items"
                   :key="index"
@@ -281,8 +279,8 @@
                 </v-expansion-panel>
               </v-expansion-panels>
             </v-col>
-            <v-col class="d-flex justify-space-between" cols="12">
-              <v-btn
+            <v-col class="d-flex justify-end" cols="12">
+              <!-- <v-btn
                 aria-label="ยกเลิกการยืนยัน"
                 color="grey"
                 rounded="lg"
@@ -290,11 +288,11 @@
                 text="ยกเลิก"
                 variant="outlined"
                 @click="dialog_sum = false"
-              />
+              /> -->
               <v-btn
                 aria-label="ยืนยันการจอง"
                 color="primary"
-                rounded="lg"
+                flat
                 size="large"
                 text="ยืนยัน"
                 @click="$router.push('/user/booking/route')"

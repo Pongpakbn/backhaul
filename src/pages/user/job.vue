@@ -261,9 +261,10 @@
                     ref="priceField"
                     density="comfortable"
                     placeholder="กรอกราคาที่ต้องการ"
-                    :rules="[v => !!v || 'กรุณากรอกราคา', v => /^\d+$/.test(v) || 'ต้องเป็นตัวเลขเท่านั้น']"
+                    :rules="[v => !!v || 'กรุณากรอกราคา', v => /^\d+$/.test(v) || 'ต้องเป็นตัวเลขเท่านั้น', v => parseInt(v) >= 500 || 'ราคาต้องไม่ต่ำกว่า 500 บาท']"
                     variant="outlined"
                   />
+                  <p class="text-red mt-2">ราคาขั้นต่ำ 500 บาท</p>
                 </v-col>
                 <v-col cols="12" md="6">
                   <h3 class="mb-2">หน่วยราคา</h3>
@@ -280,11 +281,8 @@
               </v-row>
             </v-card-text>
           </v-card>
-          <div class="mt-5 d-flex justify-space-between">
-            <v-btn color="red" rounded="md" variant="outlined" @click="offer = false">
-              ยกเลิก
-            </v-btn>
-            <v-btn color="primary" rounded="md" @click="submitOffer">เสนอราคานี้</v-btn>
+          <div class="mt-5 d-flex justify-end">
+            <v-btn color="primary" rounded="md" size="large" @click="submitOffer">เสนอราคานี้</v-btn>
           </div>
         </v-card-text>
       </v-card>
@@ -300,8 +298,10 @@
         <v-card-text>
           <h3>วงเงินประกัน</h3>
           <v-text-field
+            v-model="insuranceAmount"
             hide-details
             placeholder="กรอกจำนวนเงิน"
+            :rules="[v => !!v || 'กรุณากรอกจำนวนเงิน', v => /^\d+$/.test(v) || 'ต้องเป็นตัวเลขเท่านั้น', v => parseInt(v) >= 2000 || 'วงเงินต้องไม่ต่ำกว่า 2,000 บาท', v => parseInt(v) <= 10000 || 'วงเงินต้องไม่เกิน 10,000 บาท']"
             variant="outlined"
           />
           <p class="text-red mt-2">
@@ -313,6 +313,67 @@
             color="primary"
             size="large"
             text="ยืนยัน"
+            @click="confirmInsurance"
+          />
+        </v-card-text>
+      </v-card>
+    </v-dialog>
+
+    <!-- Dialog: ยกเลิกการจอง -->
+    <v-dialog v-model="dialog_cancle" max-width="600px">
+      <v-card>
+        <v-card-title
+          class="d-flex align-center justify-space-between text-wrap text-sm"
+        >
+          <p>กรุณาเลือกเหตุผลในการยกเลิกการจอง</p>
+          <v-btn
+            icon
+            variant="text"
+            @click="dialog_cancle = false"
+          ><v-icon>mdi-close</v-icon></v-btn>
+        </v-card-title>
+        <v-card-text>
+          <v-card
+            class="pa-4 d-flex align-center justify-center"
+            flat
+            style="background-color: rgba(242, 169, 0, 0.1)"
+          >
+            <v-icon class="me-4">mdi-bell-badge</v-icon>
+            <p>
+              กรุณาเลือกเหตุผลในการยกเลิกการจอง
+              เมื่อการยกเลิกสำเร็จคุณจะได้รับเงินคืนภายใน 7 - 14 วัน
+              การยกเลิกจะมีค่าธรรมเนียม โดยจะหัก 3% จากราคาค่าขนส่ง
+            </p>
+          </v-card>
+          <v-radio-group
+            v-model="selectradio"
+            class="mt-2"
+            color="primary"
+            hide-details=""
+          >
+            <v-radio label="ใช้เวลารอนานเกินไป" value="one" />
+            <v-radio label="ปักหมุดผิด / จองผิดพลาด" value="two" />
+            <v-radio label="ค่าขนส่งแพงเกินไป" value="three" />
+            <v-radio label="เหตุผลอื่น" value="four" />
+          </v-radio-group>
+          <v-textarea
+            v-if="selectradio === 'four'"
+            v-model="cancelReasonDetails"
+            auto-grow
+            class="mt-2"
+            placeholder="โปรดระบุเพิ่มเติม"
+            rounded="lg"
+            rows="3"
+            :rules="[v => selectradio !== 'four' || !!v || 'กรุณากรอกเหตุผลเพิ่มเติม']"
+            variant="outlined"
+          />
+          <v-btn
+            block
+            class="text-white"
+            color="#f2a900"
+            size="large"
+            text="ยกเลิกการจอง"
+            @click="confirmCancel"
           />
         </v-card-text>
       </v-card>
@@ -329,7 +390,11 @@
         dialog: false,
         dialog_offer: false,
         offer: false,
+        dialog_cancle: false,
         selectunit: null,
+        selectradio: null,
+        cancelReasonDetails: '',
+        insuranceAmount: '',
         activeTab: 0,
         showOfferCards: false,
         unitprice: [
@@ -401,7 +466,7 @@
                 date: '6 มกราคม 2568 11:00 - 12:00 น.',
               },
             ],
-            createdAt: new Date(Date.now() - 15 * 60 * 1000).toISOString(), // 15 นาทีที่แล้ว
+            createdAt: new Date(Date.now() - 15 * 60 * 1000).toISOString(),
           },
           {
             id: 'BH4567891',
@@ -433,7 +498,7 @@
                 date: '7 มกราคม 2568 13:00 - 15:00 น.',
               },
             ],
-            createdAt: new Date(Date.now() - 45 * 60 * 1000).toISOString(), // 45 นาทีที่แล้ว
+            createdAt: new Date(Date.now() - 45 * 60 * 1000).toISOString(),
           },
           {
             id: 'BH9876543',
@@ -559,6 +624,9 @@
       },
       submitOffer () {
         const price = this.$refs.priceField.value;
+        const minPrice = 500; // กำหนดราคาขั้นต่ำ 500 บาท
+
+        // ตรวจสอบว่าราคาว่างเปล่าหรือไม่ใช่ตัวเลข
         if (!price || !/^\d+$/.test(price)) {
           Swal.fire({
             icon: 'error',
@@ -567,14 +635,79 @@
           });
           return;
         }
+
+        // ตรวจสอบราคาขั้นต่ำ
+        if (parseInt(price) < minPrice) {
+          Swal.fire({
+            icon: 'error',
+            title: 'ข้อผิดพลาด',
+            text: `ราคาที่เสนอต้องไม่ต่ำกว่า ${minPrice} บาท`,
+          });
+          return;
+        }
+
+        // อัปเดตข้อมูลการจอง
         if (this.selectedBooking) {
           const booking = this.bookings.find(b => b.id === this.selectedBooking.id);
           if (booking) {
             booking.offerPrice = price;
           }
         }
+
+        // แสดงการ์ดข้อเสนอและปิด dialog
         this.showOfferCards = true;
         this.offer = false;
+
+        // แจ้งเตือนเมื่อเสนอราคาสำเร็จ
+        Swal.fire({
+          icon: 'success',
+          title: 'สำเร็จ',
+          text: `เสนอราคา ${price} บาทเรียบร้อยแล้ว`,
+        });
+      },
+      confirmInsurance () {
+        const amount = this.insuranceAmount;
+        const minAmount = 2000;
+        const maxAmount = 10000;
+
+        // ตรวจสอบว่าวงเงินว่างเปล่าหรือไม่ใช่ตัวเลข
+        if (!amount || !/^\d+$/.test(amount)) {
+          Swal.fire({
+            icon: 'error',
+            title: 'ข้อผิดพลาด',
+            text: 'กรุณากรอกวงเงินที่ถูกต้อง',
+          });
+          return;
+        }
+
+        // ตรวจสอบวงเงินขั้นต่ำและสูงสุด
+        if (parseInt(amount) < minAmount || parseInt(amount) > maxAmount) {
+          Swal.fire({
+            icon: 'error',
+            title: 'ข้อผิดพลาด',
+            text: `วงเงินต้องอยู่ระหว่าง ${minAmount} - ${maxAmount} บาท`,
+          });
+          return;
+        }
+
+        // อัปเดตวงเงินประกัน (สมมติว่ามีการเก็บใน booking)
+        if (this.selectedBooking) {
+          const booking = this.bookings.find(b => b.id === this.selectedBooking.id);
+          if (booking) {
+            booking.insuranceAmount = amount;
+          }
+        }
+
+        // ปิด dialog และแจ้งเตือนเมื่อเพิ่มวงเงินสำเร็จ
+        this.dialog_offer = false;
+        Swal.fire({
+          icon: 'success',
+          title: 'สำเร็จ',
+          text: `เพิ่มวงเงินประกัน ${amount} บาทเรียบร้อยแล้ว`,
+        });
+
+        // รีเซ็ตค่า insuranceAmount
+        this.insuranceAmount = '';
       },
       confirmBooking () {
         this.$router.push('/user/payment');
@@ -582,45 +715,10 @@
       confirmDraft () {
         this.$router.push('/user/booking');
       },
-      async showCancelAlert (booking) {
+      showCancelAlert (booking) {
+        this.selectedBooking = booking;
         if (booking.status === 'finding') {
-          const { value: reason } = await Swal.fire({
-            icon: 'warning',
-            title: 'ยืนยันการยกเลิกการจอง?',
-            text:'ขณะนี้คุณยังอยู่ในช่วงยกเลิกฟรี จะไม่มีค่าธรรมเนียมการยกเลิก',
-            showCancelButton: true,
-            cancelButtonText: 'ยกเลิก',
-            confirmButtonText: 'ยืนยันการยกเลิก',
-            inputValidator: value => {
-              if (!value) {
-                return 'กรุณาเลือกเหตุผล!';
-              }
-            },
-          });
-
-          if (reason) {
-            if (reason === 'four') {
-              const { value: otherReason } = await Swal.fire({
-                title: 'โปรดระบุเหตุผลเพิ่มเติม',
-                input: 'textarea',
-                inputPlaceholder: 'กรอกเหตุผลเพิ่มเติม',
-                showCancelButton: true,
-                cancelButtonText: 'ยกเลิก',
-                confirmButtonText: 'ยืนยัน',
-                inputValidator: value => {
-                  if (!value) {
-                    return 'กรุณากรอกเหตุผลเพิ่มเติม!';
-                  }
-                },
-              });
-
-              if (otherReason) {
-                console.log('Canceling booking:', booking.id, 'Reason:', reason, 'Details:', otherReason);
-              }
-            } else {
-              console.log('Canceling booking:', booking.id, 'Reason:', reason);
-            }
-          }
+          this.dialog_cancle = true;
         } else if (booking.status === 'canceled') {
           const reasonText = {
             one: 'ใช้เวลารอนานเกินไป',
@@ -629,12 +727,40 @@
             four: booking.cancelReasonDetails || 'เหตุผลอื่น',
           }[booking.cancelReason || 'one'];
 
-          await Swal.fire({
+          Swal.fire({
             icon: 'info',
             title: 'รายละเอียดการยกเลิก',
             html: `เหตุผล: ${reasonText}`,
             confirmButtonText: 'ปิด',
           });
+        }
+      },
+      confirmCancel () {
+
+        if (this.selectedBooking) {
+          const booking = this.bookings.find(b => b.id === this.selectedBooking.id);
+          if (booking) {
+            const isFreeCancel = this.isWithin30Minutes(booking.createdAt);
+            const fee = isFreeCancel ? 0 : parseFloat(booking.totalPrice) * 0.03; // ค่าธรรมเนียม 3%
+
+            booking.status = 'canceled';
+            booking.cancelReason = this.selectradio;
+            if (this.selectradio === 'four') {
+              booking.cancelReasonDetails = this.cancelReasonDetails;
+            }
+
+            // ปิด dialog และรีเซ็ตค่า
+            this.dialog_cancle = false;
+            this.selectradio = null;
+            this.cancelReasonDetails = '';
+
+            // แจ้งเตือนเมื่อยกเลิกสำเร็จ
+            Swal.fire({
+              icon: 'success',
+              title: 'ยกเลิกสำเร็จ',
+              html: `การจองของคุณถูกยกเลิกเรียบร้อยแล้ว<br>ค่าธรรมเนียม: ${fee.toFixed(2)} บาท<br>เงินคืนจะดำเนินการภายใน 7-14 วัน`,
+            });
+          }
         }
       },
     },

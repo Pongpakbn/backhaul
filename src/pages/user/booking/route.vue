@@ -1,3 +1,4 @@
+```vue
 <template>
   <v-container class="pa-0 fill-height" fluid style="background-color: white">
     <v-row class="fill-height" no-gutters>
@@ -27,7 +28,7 @@
                     block
                     class="border-thin"
                     :class="{ 'bg-primary text-white': routeMode === 'useSplitRoute', 'bg-white': routeMode !== 'single' }"
-                    :prepend-icon="routeMode === 'useSplitRoute' ? 'mdi-checkbox-marked' : '' "
+                    :prepend-icon="routeMode === 'useSplitRoute' ? 'mdi-checkbox-marked' : ''"
                     rounded="lg"
                     size="large"
                     variant="outlined"
@@ -99,13 +100,15 @@
                     hide-details
                     label="บริการส่งเอกสารกลับ"
                   />
-                  <p style="color: #f2a900; text-decoration: underline">
+                  <p
+                    style="color: #f2a900; text-decoration: underline; cursor: pointer"
+                    @click="openAddressDialog"
+                  >
                     เปลี่ยนที่อยู่
                   </p>
                 </div>
                 <div class="pl-10">
                   <p><b>สถานที่ส่งเอกสารกลับ</b></p>
-                  <!-- Mock -->
                   <p>{{ address.name }}</p>
                   <p>{{ address.location }}</p>
                 </div>
@@ -141,23 +144,64 @@
                 <v-btn
                   block
                   color="secondary"
-                  size="x-large"
+                  size="large"
                   text="บันทึกร่าง"
                   variant="outlined"
+                  @click="savedraft"
                 />
               </v-col>
               <v-col cols="12" md="6">
                 <v-btn
                   block
                   color="primary"
-                  size="x-large"
+                  size="large"
                   text="ยืนยันการจอง"
-                  @click="$router.push('/user/booking/matching')"
+                  @click="confirmBooking"
                 />
               </v-col>
             </v-row>
           </div>
         </div>
+
+        <!-- Address Selection Dialog -->
+        <v-dialog v-model="showAddressDialog" max-width="500px">
+          <v-card>
+            <v-card-title class="text-h5">เลือกที่อยู่</v-card-title>
+            <v-divider />
+            <v-card-text>
+              <v-list>
+                <v-list-item
+                  v-for="(addr, index) in addressList"
+                  :key="index"
+                  :active="selectedAddressIndex === index"
+                  color="primary"
+                  :value="addr"
+                  @click="selectAddress(index)"
+                >
+                  <v-list-item-title>{{ addr.name }}</v-list-item-title>
+                  <v-list-item-subtitle>{{ addr.location }}</v-list-item-subtitle>
+                </v-list-item>
+              </v-list>
+            </v-card-text>
+            <v-divider />
+            <v-card-actions>
+              <v-spacer />
+              <v-btn
+                color="grey"
+                text="ยกเลิก"
+                variant="text"
+                @click="showAddressDialog = false"
+              />
+              <v-btn
+                color="primary"
+                :disabled="selectedAddressIndex === null"
+                text="ยืนยัน"
+                variant="text"
+                @click="confirmAddress"
+              />
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
       </v-col>
 
       <!-- Right Panel (Map) -->
@@ -171,6 +215,8 @@
 <script>
   import RouteMap from '@/components/Map.vue';
   import RouteAddress from '@/components/Address.vue';
+  import Swal from 'sweetalert2';
+
   export default {
     components: {
       RouteMap,
@@ -187,6 +233,25 @@
           location:
             '2171 ถ. เพชรบุรีตัดใหม่ แขวงบางกะปิ เขตห้วยขวาง กรุงเทพมหานคร 10310 ประเทศไทย',
         },
+        showAddressDialog: false,
+        selectedAddressIndex: null,
+        addressList: [
+          {
+            name: 'มานะ ใจดี 099-123-4567',
+            location:
+              '2171 ถ. เพชรบุรีตัดใหม่ แขวงบางกะปิ เขตห้วยขวาง กรุงเทพมหานคร 10310 ประเทศไทย',
+          },
+          {
+            name: 'สมชาย รอบคอบ 088-987-6543',
+            location:
+              '123 ถ. สุขุมวิท แขวงคลองเตย เขตคลองเตย กรุงเทพมหานคร 10110 ประเทศไทย',
+          },
+          {
+            name: 'นารี ใส่ใจ 077-456-7890',
+            location:
+              '456 ซ. รัชดาภิเษก แขวงดินแดง เขตดินแดง กรุงเทพมหานคร 10400 ประเทศไทย',
+          },
+        ],
       };
     },
     methods: {
@@ -201,12 +266,45 @@
       setRouteMode (mode) {
         this.routeMode = mode;
       },
+      openAddressDialog () {
+        this.showAddressDialog = true;
+        this.selectedAddressIndex = null; // Reset selection when opening dialog
+      },
+      selectAddress (index) {
+        this.selectedAddressIndex = index;
+      },
+      confirmAddress () {
+        if (this.selectedAddressIndex !== null) {
+          this.address = { ...this.addressList[this.selectedAddressIndex] };
+        }
+        this.showAddressDialog = false;
+        this.selectedAddressIndex = null;
+      },
+      confirmBooking () {
+        Swal.fire({
+          icon: 'success',
+          title: 'ยืนยันการจองสำเร็จ',
+          showConfirmButton: false,
+          timer: 1500,
+        }).then(() => {
+          this.$router.push('/user/booking/matching');
+        });
+      },
+      savedraft (){
+        Swal.fire({
+          icon: 'success',
+          title: 'บันทึกร่างสำเร็จ',
+          showConfirmButton: false,
+          timer: 1500,
+        }).then(() => {
+          this.$router.push('/user/job');
+        });
+      },
     },
   };
 </script>
 
 <style scoped>
-/* route address */
 .left-panel-content {
   height: 100vh;
   overflow-y: auto;
@@ -220,7 +318,6 @@
   background-color: var(--v-primary-lighten5, #0053b8) !important;
 }
 
-/* ทำให้ cursor เป็นรูปแบบ pointer เมื่อชี้ที่ card */
 .v-card {
   cursor: pointer;
 }

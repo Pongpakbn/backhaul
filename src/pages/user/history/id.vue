@@ -2,7 +2,13 @@
   <v-container>
     <v-card class="mb-2 pl-0" flat>
       <v-card-title class="ma-2 pl-0 d-flex justify-space-between">
-        <v-btn prepend-icon="mdi-chevron-left" text="ย้อนกลับ" variant="text" @click="$router.push('/user/history')" />
+        <v-btn
+          class="no-print"
+          prepend-icon="mdi-chevron-left"
+          text="ย้อนกลับ"
+          variant="text"
+          @click="$router.push('/user/history')"
+        />
         <div class="d-flex align-center">
           <p class="me-2" style="color:#005eb8;">#BH4334513</p>
           <v-chip color="success" label text="ขนส่งสำเร็จ" variant="outlined" />
@@ -11,8 +17,9 @@
       <v-divider />
     </v-card>
     <v-card flat>
-      <v-card-title>
+      <v-card-title class="d-flex justify-space-between align-center">
         <p>สถานะการจัดส่ง</p>
+        <v-btn class="no-print" icon="mdi-printer" variant="text" @click="printPage" />
       </v-card-title>
       <v-divider />
       <v-card-text>
@@ -93,7 +100,7 @@
                           <p class="me-2 mb-1">{{ item.receive }}</p>
                           <v-btn
                             v-if="item.status === 'รถออกเดินทาง'"
-                            class="mt-1"
+                            class="mt-1 no-print"
                             color="black"
                             density="compact"
                             rounded="lg"
@@ -122,13 +129,13 @@
           <v-col cols="12" md="6">
             <v-row>
               <v-col cols="12">
-                <span class="blur">ทำการจองเมื่อ :  </span> <span>20/02/2025, 11:00</span>
+                <span class="blur">ทำการจองเมื่อ : </span> <span>20/02/2025, 11:00</span>
               </v-col>
               <v-col cols="12">
-                <span class="blur">สถานะ :  </span> <span>สำเร็จ</span>
+                <span class="blur">สถานะ : </span> <span>สำเร็จ</span>
               </v-col>
               <v-col cols="12">
-                <span class="blur">สถานะการชำระเงิน :  </span> <span>ชำระเงินแล้ว</span>
+                <span class="blur">สถานะการชำระเงิน : </span> <span>ชำระเงินแล้ว</span>
               </v-col>
             </v-row>
           </v-col>
@@ -136,13 +143,13 @@
           <v-col cols="12" md="6">
             <v-row>
               <v-col cols="12">
-                <span class="blur">ประเภทการจอง :  </span> <span>เหมาคัน</span>
+                <span class="blur">ประเภทการจอง : </span> <span>เหมาคัน</span>
               </v-col>
               <v-col cols="12">
-                <span class="blur">ช่องทางการชำระเงิน :  </span> <span>โอนเงินผ่านบัญชีธนาคาร</span>
+                <span class="blur">ช่องทางการชำระเงิน : </span> <span>โอนเงินผ่านบัญชีธนาคาร</span>
               </v-col>
               <v-col cols="12">
-                <span class="blur">จัดส่งสำเร็จเมื่อ :  </span> <span>22/02/2025, 15:00</span>
+                <span class="blur">จัดส่งสำเร็จเมื่อ : </span> <span>22/02/2025, 15:00</span>
               </v-col>
             </v-row>
           </v-col>
@@ -185,7 +192,7 @@
             </v-row>
           </v-col>
 
-          <v-col cols="12" md="5  ">
+          <v-col cols="12" md="5">
             <v-row>
               <v-col cols="12">
                 <span class="blur">ป้ายทะเบียน : </span><span>กศ1111</span>
@@ -225,7 +232,7 @@
                 <span class="blur">ประเภทสินค้า : </span><span>เครื่องใช้ไฟฟ้า</span>
               </v-col>
               <v-col cols="12">
-                <span class="blur">น้ำหนัก : </span><span>8 kg. </span>
+                <span class="blur">น้ำหนัก : </span><span>8 kg.</span>
               </v-col>
               <v-col cols="12">
                 <span class="blur">มูลค่าสินค้า : </span><span>800 บาท</span>
@@ -236,10 +243,10 @@
           <v-col cols="12" md="5">
             <v-row>
               <v-col cols="12">
-                <span class="blur">รวมสินค้า : </span><span>800 บาท </span>
+                <span class="blur">รวมสินค้า : </span><span>800 บาท</span>
               </v-col>
               <v-col cols="12">
-                <span class="blur">ค่าจัดส่ง : </span><span> 1,287.00 บาท </span>
+                <span class="blur">ค่าจัดส่ง : </span><span>1,287.00 บาท</span>
               </v-col>
             </v-row>
           </v-col>
@@ -247,7 +254,7 @@
       </v-card-text>
       <v-divider />
       <v-card-text class="d-flex justify-end">
-        <h2>รวม : 1,287.00 บาท </h2>
+        <h2>รวม : 1,287.00 บาท</h2>
       </v-card-text>
     </v-card>
   </v-container>
@@ -258,8 +265,9 @@
     </v-card>
   </v-dialog>
 </template>
+
 <script>
-  export default{
+  export default {
     data () {
       return {
         dialog_img: false,
@@ -291,7 +299,7 @@
             status: 'รถออกเดินทาง',
             description: 'รถออกจากต้นทางเรียบร้อย',
             color: 'grey',
-            receive:'Max',
+            receive: 'Max',
           },
           {
             date: '2025-02-21 14:00',
@@ -314,10 +322,16 @@
         ],
       };
     },
-  }
+    methods: {
+      printPage () {
+        window.print();
+      },
+    },
+  };
 </script>
+
 <style scoped>
-.text{
+.text {
   font-size: 18px;
 }
 .blur {
@@ -328,8 +342,32 @@
   -webkit-overflow-scrolling: touch;
   padding-bottom: 8px;
 }
-
 .timeline-wrapper > * {
   min-width: max-content;
+}
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  .v-container {
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+  .v-card {
+    box-shadow: none !important;
+    border: none !important;
+  }
+  .v-timeline--horizontal {
+    overflow-x: visible !important;
+    white-space: nowrap;
+  }
+  .v-dialog {
+    display: none !important;
+  }
+  body {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
 }
 </style>

@@ -45,7 +45,7 @@
     <!-- Dialog เพิ่ม/แก้ไขที่อยู่ -->
     <v-dialog v-model="dialog" width="800">
       <v-card>
-        <v-card-title>ที่อยู่</v-card-title>
+        <v-card-title class="d-flex justify-space-between align-center">ที่อยู่ <v-btn icon="mdi-close" variant="text" @click="dialog=false" /></v-card-title>
         <v-card-text>
           <p>ชื่อ-นามสกุล</p>
           <v-text-field v-model="form.name" density="comfortable" placeholder="กรอกชื่อ-นามสกุล" variant="outlined" />
