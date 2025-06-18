@@ -15,7 +15,7 @@
     </v-card>
     <v-list color="primary" nav>
       <v-list-item
-        v-for="(item, index) in menu_partner"
+        v-for="(item, index) in menu_admin"
         :key="index"
         :active="$route.path === item.route"
         :prepend-icon="item.icon"
@@ -90,7 +90,7 @@
     { title: 'งานของฉัน', icon: 'mdi-map-outline', route: '/lspdriver' },
     { title: 'ช้อความ', icon: 'mdi-truck-outline', route: '/lspdriver/message' },
   ]
-  const munu_admin = [
+  const menu_admin = [
     { title: 'ยืนยันสิทธิ์การใช้งาน', icon: 'mdi-account-check', route: '/admin' },
     { title: 'ติดตามการขนส่ง', icon: 'mdi-target', route: '/admin/tracking' },
     { title: 'คนขับรถในระบบ', icon: 'mdi-car-seat', route: '/admin/driver' },

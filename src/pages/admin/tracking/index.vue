@@ -9,15 +9,14 @@
         <template #[`item.status`]="{ item }">
           <v-btn
             class="text-capitalize"
-            color="purple"
+            :color="getStatusColor(item.status)"
             size="small"
             variant="outlined"
             @click="viewStatus(item)"
           >
-            {{ item.status || 'ไม่ระบุสถานะ' }}
+            {{ item.status }}
           </v-btn>
         </template>
-
         <template #[`item.details`]="{ item }">
           <v-btn
             color="primary"
@@ -46,36 +45,46 @@
           {
             id: 'BH23142',
             cartype: 'รถ 4 ล้อ (ตู้ทึบ)',
-            phone: 'มานะ(093-343-5345)',
+            phone: 'มานะ (093-343-5345)',
             status: 'รอจัดส่ง',
           },
           {
-            id: 'บริษัท แอ๊ดวานซ์',
-            cartype: '083-343-5345',
-            phone: 'LSP',
-            status: 'รอการอนุมัติ',
-          },
-          {
-            id: 'คุณนัด',
-            cartype: '083-343-2564',
-            phone: 'มิลเลนเนียม',
+            id: 'BH23143',
+            cartype: 'รถ 6 ล้อ',
+            phone: 'สมชาย (083-343-5345)',
             status: 'รอจัดส่ง',
           },
           {
-            id: 'มูเน่ เมเนจเมน',
-            cartype: '083-243-5343',
-            phone: 'มิลเลนเนียม',
-            status: 'สำเร็จแล้ว',
+            id: 'BH23144',
+            cartype: 'รถกระบะ',
+            phone: 'นัด (083-343-2564)',
+            status: 'กำลังขนส่ง',
+          },
+          {
+            id: 'BH23145',
+            cartype: 'รถ 4 ล้อ',
+            phone: 'มานพ (083-243-5343)',
+            status: 'ขนส่งสำเร็จ',
           },
         ],
       };
     },
     methods: {
-      viewStatus (item) {
-        alert(`Status for ${item.id}: ${item.status}`);
+      getStatusColor (status) {
+        switch (status) {
+          case 'กำลังขนส่ง':
+            return 'primary';
+          case 'ขนส่งสำเร็จ':
+            return 'success';
+          default:
+            return 'warning';
+        }
       },
-      viewDetails (item) {
-        alert(`Details for ${item.id}`);
+      viewStatus (item) {
+        alert(`สถานะสำหรับ ${item.id}: ${item.status}`);
+      },
+      viewDetails () {
+        this.$router.push(`/admin/tracking/id`);
       },
     },
   };
