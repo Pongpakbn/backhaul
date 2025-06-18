@@ -1,4 +1,3 @@
-```vue
 <template>
   <v-container>
     <v-card flat>
@@ -156,7 +155,6 @@
                 required
                 rounded="lg"
                 rows="4"
-                :rules="[v => !!v || 'กรุณากรอกรายละเอียดเพิ่มเติม']"
                 variant="outlined"
               />
             </v-col>
@@ -223,7 +221,11 @@
       async submit () {
         const { valid } = await this.$refs.form.validate();
         if (valid) {
-          this.$router.push('/user/booking/ltl');
+          if (this.selectedOption === 'รายชิ้น') {
+            this.$router.push('/user/booking/ltl');
+          } else if (this.selectedOption === 'เหมาคัน') {
+            this.$router.push('/user/booking/ftl');
+          }
         }
       },
     },
@@ -235,4 +237,3 @@
   border-radius: 15px;
 }
 </style>
-```
