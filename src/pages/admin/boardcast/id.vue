@@ -49,13 +49,23 @@
     <v-card class="mt-2" flat rounded="lg">
       <v-card-title class="d-flex justify-space-between align-center">
         <h4>แผนการเดินทาง</h4>
-        <v-btn
-          color="primary"
-          rounded="md"
-          size="large"
-          text="เลือกแผนการเดินรถ"
-          @click="dialog = true"
-        />
+        <div>
+          <v-btn
+            class="mr-2"
+            color="primary"
+            rounded="md"
+            size="large"
+            text="เลือกแผนการเดินรถ"
+            @click="dialog = true"
+          />
+          <v-btn
+            color="error"
+            rounded="md"
+            size="large"
+            text="ไม่มีแผนที่เหมาะสม"
+            @click="notifyNoPlan"
+          />
+        </div>
       </v-card-title>
     </v-card>
     <v-card v-if="selectedPlan" class="mt-2" flat rounded="lg">
@@ -219,6 +229,54 @@
                   this.$swal
                     .fire({
                       title: 'บันทึกสำเร็จ',
+                      text: response.data.msg,
+                      confirmButtonText: 'ตกลง',
+                      icon: 'success',
+                      timer: 1500,
+                      showConfirmButton: false,
+                    })
+                    .then(() => {
+                      this.$router.push('/admin/boardcast')
+                    })
+                } else {
+                  this.$swal.fire({
+                    title: 'เกิดข้อผิดพลาด',
+                    text: response.data.msg,
+                    confirmButtonText: 'ตกลง',
+                    icon: 'error',
+                    timer: 1500,
+                    showConfirmButton: false,
+                  })
+                }
+              })
+            }
+          })
+      },
+      notifyNoPlan () {
+        this.$swal
+          .fire({
+            title: 'แจ้งเตือนผู้จอง',
+            text: 'คุณต้องการแจ้งผู้จองว่าไม่มีแผนการเดินรถที่เหมาะสมหรือไม่?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'ตกลง',
+            cancelButtonText: 'ยกเลิก',
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+          })
+          .then(result => {
+            if (result.isConfirmed) {
+              // Simulate API call to notify booker
+              Promise.resolve({
+                data: {
+                  success: true,
+                  msg: 'แจ้งเตือนผู้จองสำเร็จ',
+                },
+              }).then(response => {
+                if (response.data.success) {
+                  this.$swal
+                    .fire({
+                      title: 'แจ้งเตือนสำเร็จ',
                       text: response.data.msg,
                       confirmButtonText: 'ตกลง',
                       icon: 'success',

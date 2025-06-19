@@ -28,8 +28,8 @@
 
     <!-- loop cards -->
     <v-card
-      v-for="(item, index) in filteredBookings"
-      :key="index"
+      v-for="item in filteredBookings"
+      :key="item.id"
       class="mt-2"
       flat
       rounded="md"
@@ -70,8 +70,8 @@
           <!-- ฝั่งขวา -->
           <v-col cols="12" md="6">
             <v-row dense>
-              <v-col cols="12"><p>ผู้ให้บริการ : {{ item.provider }}</p></v-col>
-              <v-col cols="12"><p>ป้ายทะเบียน : {{ item.vehicleType }}</p></v-col>
+              <v-col v-if="item.status !== 'boardcast'" cols="12"><p>ผู้ให้บริการ : {{ item.provider || 'N/A' }}</p></v-col>
+              <v-col v-if="item.status !== 'boardcast'" cols="12"><p>ป้ายทะเบียน : {{ item.vehicleType }}</p></v-col>
               <v-col cols="12">
                 <p>
                   จุดรับส่งสินค้า :
@@ -82,6 +82,13 @@
                 </p>
               </v-col>
               <v-col cols="12"><p>ระยะทาง : {{ item.distance }}</p></v-col>
+              <v-col v-if="item.status === 'boardcast'">
+                <v-card border="thin" style="background-color: #FEF6E5;" variant="outlined">
+                  <v-card-text>
+                    ขณะนี้ระบบกำลังหารถให้คุณภายใน 24  ชม. หากครบกำหนดแล้วยังไม่พบรถ กรุณาติดต่อแอดมิน
+                  </v-card-text>
+                </v-card>
+              </v-col>
               <v-col v-if="showOfferCards && item.transportOption === 'เสนอราคาที่ต้องการ'" cols="12">
                 <v-card
                   class="rounded-lg border-dashed"
@@ -99,6 +106,7 @@
 
           <v-col v-if="item.status !== 'draft'" cols="12">
             <v-card
+              v-if="item.status !== 'boardcast'"
               class="text-white pa-2 mb-2"
               style="background-color: #f2a901;"
               variant="tonal"
@@ -117,7 +125,7 @@
 
           <v-col class="d-flex justify-end ga-2" cols="12" md="6">
             <v-btn
-              v-if="item.status === 'finding'"
+              v-if="item.status === 'finding' || item.status === 'boardcast' "
               color="red"
               variant="outlined"
               @click="showCancelAlert(item)"
@@ -133,7 +141,15 @@
               เพิ่มวงเงินประกัน
             </v-btn>
             <v-btn
-              v-if="item.status === 'finding' && item.transportOption === 'เสนอราคาที่ต้องการ'"
+              v-if="item.status === 'boardcast'"
+              color="primary"
+              rounded="md"
+              @click="dialog_boardcast = true"
+            >
+              เช็คสถานะการหารถ
+            </v-btn>
+            <v-btn
+              v-if="(item.status === 'finding' ) && item.transportOption === 'เสนอราคาที่ต้องการ'"
               color="primary"
               rounded="md"
               @click="openOfferDialog(item)"
@@ -148,21 +164,21 @@
               ยืนยันการจอง
             </v-btn>
             <v-btn
-              v-if="item.status === 'finding' && item.transportOption === 'ราคาที่ระบบแนะนำ'"
+              v-if="(item.status === 'finding' ) && item.transportOption === 'ราคาที่ระบบแนะนำ'"
               color="primary"
               @click="confirmBooking(item)"
             >
               ยืนยัน
             </v-btn>
             <v-btn
-              v-if="item.status === 'in_transit' || item.status === 'completed'"
+              v-if="item.status === 'in_transit' "
               color="primary"
               variant="outlined"
               @click="() => {
                 if (item.status === 'in_transit') {
-                  $router.push(`/user/tracking/id`);
+                  $router.push(`/user/tracking/${item.id}`);
                 } else if (item.status === 'completed') {
-                  $router.push(`/user/history/id`);
+                  $router.push(`/user/history/${item.id}`);
                 }
               }"
             >
@@ -183,14 +199,14 @@
           </v-col>
           <v-col cols="12" md="6">
             <div
-              v-if="item.status === 'finding' && isWithin30Minutes(item.createdAt)"
+              v-if="(item.status === 'finding') && isWithin30Minutes(item.createdAt)"
               class="d-flex align-center ga-2 text-red"
             >
               <v-icon>mdi-alert-outline</v-icon>
               <h3>ยกเลิกฟรีภายใน 30 นาที หลังจากยืนยันการจอง (หลังจากนั้นจะมีค่าธรรมเนียมยกเลิก)</h3>
             </div>
             <div
-              v-else-if="item.status === 'finding' && !isWithin30Minutes(item.createdAt)"
+              v-else-if="(item.status === 'finding' || item.status === 'boardcast') && !isWithin30Minutes(item.createdAt)"
               class="d-flex align-center ga-2 text-red"
             >
               <v-icon>mdi-close</v-icon>
@@ -258,7 +274,7 @@
                 <v-col cols="12" md="6">
                   <h3 class="mb-2">ราคาค่าขนส่ง</h3>
                   <v-text-field
-                    ref="priceField"
+                    v-model="offerPrice"
                     density="comfortable"
                     placeholder="กรอกราคาที่ต้องการ"
                     :rules="[v => !!v || 'กรุณากรอกราคา', v => /^\d+$/.test(v) || 'ต้องเป็นตัวเลขเท่านั้น', v => parseInt(v) >= 500 || 'ราคาต้องไม่ต่ำกว่า 500 บาท']"
@@ -378,6 +394,29 @@
         </v-card-text>
       </v-card>
     </v-dialog>
+    <!-- Dialog: boardcast -->
+    <v-dialog v-model="dialog_boardcast" max-width="600px">
+      <v-card>
+        <v-card-title class="d-flex justify-space-between align-center">
+          เช็คสถานะการหารถ
+          <v-btn icon="mdi-close" variant="text" @click="dialog_boardcast = false" />
+        </v-card-title>
+        <v-divider />
+        <v-card-text>
+          <v-row>
+            <v-col cols="6"><p>#BH4334513:</p></v-col>
+            <v-col cols="6"><p>สงขลา → สมุทรปราการ</p></v-col>
+            <v-col cols="6"><p>ทำการจองเมื่อ :</p></v-col>
+            <v-col cols="6"><p>18-04-2568 | 13:00  น.</p></v-col>
+          </v-row>
+          <v-card class="border-md border-dashed pa-4 text-center text-primary mt-4 border-primary" variant="outlined">
+            <v-card-text>
+              <h2>อยู่ระหว่างการค้นหา</h2>
+            </v-card-text>
+          </v-card>
+        </v-card-text>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
@@ -387,6 +426,7 @@
   export default {
     data () {
       return {
+        dialog_boardcast:false,
         dialog: false,
         dialog_offer: false,
         offer: false,
@@ -395,6 +435,7 @@
         selectradio: null,
         cancelReasonDetails: '',
         insuranceAmount: '',
+        offerPrice: '',
         activeTab: 0,
         showOfferCards: false,
         unitprice: [
@@ -507,7 +548,7 @@
             startDate: '10 กพ. 2568',
             vehicleType: 'รถ 4 ล้อ (เปิดข้าง)',
             goodsType: 'สินค้าทั่วไป',
-            goodsSize: '25x25x20',
+            goodsSize: '25x25x25',
             transportOption: 'ราคาที่ระบบแนะนำ',
             offerPrice: '1,500',
             provider: 'North Logistics',
@@ -568,18 +609,18 @@
             id: 'BH7654321',
             status: 'canceled',
             route: 'ภูเก็ต → สุราษฎร์ธานี',
-            startDate: '5 กพ. 2568',
-            vehicleType: 'รถ 4 ล้อ (ตู้ทึบ)',
+            startDate: '5 มกราคม 2568',
+            vehicleType: 'รถ 4 ล้อ (ตู้ทบ)',
             goodsType: 'สินค้าทั่วไป',
             goodsSize: '15x15x15',
             transportOption: 'ราคาที่ระบบแนะนำ',
             offerPrice: '1,000',
             provider: 'South Trans',
             providerPrice: null,
-            distance: null,
-            totalPrice: null,
+            distance: '250 กม.',
+            totalPrice: '1,200.00',
             fullInsuranceText:
-              'ประกันสินค้าระระหว่างขนส่ง จ่ายตามจริงแต่ไม่เกิน 1,000,000 บาท/เที่ยว (หมายเหตุ: ขึ้นอยู่กับประกันภัยของแต่ละคัน)',
+              'ประกันสินค้าระหว่างขนส่ง จ่ายตามจริงแต่ไม่เกิน 1,000,000 บาท/เที่ยว (หมายเหตุ: ขึ้นอยู่กับประกันภัยของแต่ละคัน)',
             locations: [
               {
                 type: 'pickup',
@@ -597,13 +638,53 @@
             createdAt: new Date().toISOString(),
             cancelReason: 'one',
           },
+          {
+            id: 'BH7654322',
+            status: 'boardcast',
+            route: 'ภูเก็ต → สุราษฎร์ธานี',
+            startDate: '5 มกราคม 2568',
+            vehicleType: 'รถ 4 ล้อ (ตู้ทบ)',
+            goodsType: 'สินค้าทั่วไป',
+            goodsSize: '15x15x15',
+            transportOption: 'ราคาที่ระบบแนะนำ',
+            offerPrice: '1,000',
+            provider: null,
+            providerPrice: null,
+            distance: '250 กม.',
+            totalPrice: '1,200.00',
+            fullInsuranceText:
+              'ประกันสินค้าระหว่างรับ-ส่ง จ่ายตามระยะทางและจำนวนเงินจริง แต่ไม่เกิน 1,000,000 บาท/ต่อเที่ยว',
+            locations: [
+              {
+                type: 'pickup',
+                label: 'จุดรับสินค้า',
+                address: '333 ถนนเจ้าฟ้า อ.เมือง ภูเก็ต 83000',
+                date: '2 มกราคม 2568 09:00 - 11:00 น.',
+              },
+              {
+                type: 'dropoff',
+                label: 'จุดส่งสินค้า',
+                address: '444 ถนนตราด อ.เมือง สุราษฎร์ธานี 84000',
+                date: '2 มกราคม 2568 13:00 - 15:00 น.',
+              },
+            ],
+            createdAt: new Date().toISOString(),
+          },
         ],
       };
     },
     computed: {
       filteredBookings () {
-        const statusMap = ['draft', 'finding', 'in_transit', 'completed', 'canceled'];
-        return this.bookings.filter(booking => booking.status === statusMap[this.activeTab]);
+        const statusMap = [
+          ['draft'], // บันทึกร่าง
+          ['finding', 'boardcast'], // หารถอยู่ (รวม boardcast)
+          ['in_transit'], // อยู่ระหว่างเดินทาง
+          ['completed'], // สำเร็จ
+          ['canceled'], // ยกเลิก
+        ];
+        const filtered = this.bookings.filter(booking => statusMap[this.activeTab].includes(booking.status));
+        console.log('Filtered Bookings:', filtered); // ดีบักเพื่อตรวจสอบการจองที่กรองได้
+        return filtered;
       },
     },
     methods: {
@@ -620,13 +701,14 @@
       },
       openOfferDialog (item) {
         this.selectedBooking = item;
+        this.offerPrice = item.offerPrice || '';
         this.offer = true;
       },
       submitOffer () {
-        const price = this.$refs.priceField.value;
-        const minPrice = 500; // กำหนดราคาขั้นต่ำ 500 บาท
+        const price = this.offerPrice;
+        const minPrice = 500;
 
-        // ตรวจสอบว่าราคาว่างเปล่าหรือไม่ใช่ตัวเลข
+        // ตรวจสอบว่าราคาว่างหรือไม่ใช่ตัวเลข
         if (!price || !/^\d+$/.test(price)) {
           Swal.fire({
             icon: 'error',
@@ -657,6 +739,7 @@
         // แสดงการ์ดข้อเสนอและปิด dialog
         this.showOfferCards = true;
         this.offer = false;
+        this.offerPrice = '';
 
         // แจ้งเตือนเมื่อเสนอราคาสำเร็จ
         Swal.fire({
@@ -670,7 +753,7 @@
         const minAmount = 2000;
         const maxAmount = 10000;
 
-        // ตรวจสอบว่าวงเงินว่างเปล่าหรือไม่ใช่ตัวเลข
+        // ตรวจสอบว่าวงเงินว่างหรือไม่ใช่ตัวเลข
         if (!amount || !/^\d+$/.test(amount)) {
           Swal.fire({
             icon: 'error',
@@ -685,12 +768,12 @@
           Swal.fire({
             icon: 'error',
             title: 'ข้อผิดพลาด',
-            text: `วงเงินต้องอยู่ระหว่าง ${minAmount} - ${maxAmount} บาท`,
+            text: `จำนวนเงินต้องอยู่ระหว่าง ${minAmount} - ${maxAmount} บาท`,
           });
           return;
         }
 
-        // อัปเดตวงเงินประกัน (สมมติว่ามีการเก็บใน booking)
+        // อัปเดตวงเงินประกัน
         if (this.selectedBooking) {
           const booking = this.bookings.find(b => b.id === this.selectedBooking.id);
           if (booking) {
@@ -717,7 +800,7 @@
       },
       showCancelAlert (booking) {
         this.selectedBooking = booking;
-        if (booking.status === 'finding') {
+        if (booking.status === 'finding' || booking.status === 'boardcast') {
           this.dialog_cancle = true;
         } else if (booking.status === 'canceled') {
           const reasonText = {
@@ -736,12 +819,29 @@
         }
       },
       confirmCancel () {
+        if (!this.selectradio) {
+          Swal.fire({
+            icon: 'error',
+            title: 'ข้อผิดพลาด',
+            text: 'กรุณาเลือกเหตุผลในการยกเลิก',
+          });
+          return;
+        }
+
+        if (this.selectradio === 'four' && !this.cancelReasonDetails) {
+          Swal.fire({
+            icon: 'error',
+            title: 'ข้อผิดพลาด',
+            text: 'กรุณากรอกเหตุผลเพิ่มเติม',
+          });
+          return;
+        }
 
         if (this.selectedBooking) {
           const booking = this.bookings.find(b => b.id === this.selectedBooking.id);
           if (booking) {
             const isFreeCancel = this.isWithin30Minutes(booking.createdAt);
-            const fee = isFreeCancel ? 0 : parseFloat(booking.totalPrice) * 0.03; // ค่าธรรมเนียม 3%
+            const fee = isFreeCancel ? 0 : parseFloat(booking.totalPrice) * 0.03;
 
             booking.status = 'canceled';
             booking.cancelReason = this.selectradio;

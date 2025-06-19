@@ -61,12 +61,21 @@
         <v-card-text>
           <v-form ref="form" v-model="valid" lazy-validation>
             <v-label>หมวด</v-label>
-            <v-text-field
+            <v-select
               v-model="form.type"
               class="mt-2"
-              placeholder="หมวด"
+              :items="categoryOptions"
+              placeholder="เลือกหมวด"
               required
-              :rules="[v => !!v || 'กรุณากรอกหมวด']"
+              :rules="[v => !!v || 'กรุณาเลือกหมวด']"
+              variant="outlined"
+            />
+            <v-text-field
+              v-if="form.type === '+ เพิ่มหมวดใหม่'"
+              v-model="form.newCategory"
+              class="mt-2"
+              placeholder="ระบุชื่อหมวดใหม่"
+              :rules="[v => !!v || 'กรุณากรอกชื่อหมวดใหม่']"
               variant="outlined"
             />
             <v-label>ข้อคำถาม</v-label>
@@ -168,13 +177,15 @@
         editedIndex: -1,
         form: {
           type: '',
+          newCategory: '',
           question: '',
           choices: [{ label: '', hasInput: false, inputLabel: '' }],
           car: false,
           plan: false,
         },
         defaultForm: {
-          type: '',
+          type: 'ตรวจสอบน้ำมันเบรก',
+          newCategory: '',
           question: '',
           choices: [{ label: '', hasInput: false, inputLabel: '' }],
           car: false,
@@ -194,7 +205,7 @@
             no: 1,
             type: 'ตรวจสอบน้ำมันเบรก',
             question: 'ระดับน้ำมันเบรก',
-            choice: 'สูงไป,ปกติ,ต่ำไป,สภาพใช้ได้,ควรเปลี่ยน,DOT 3,DOT 4',
+            choice: 'สูงไป,ปกติ,ต่ำไป,สภาพดี,ควรเปลี่ยน,DOT 3,DOT 4',
             car: true,
             plan: false,
           },
@@ -202,7 +213,7 @@
             no: 2,
             type: 'ตรวจสอบยาง',
             question: 'สภาพยางรถยนต์',
-            choice: 'ปกติ,สึกหรอ,ต้องเปลี่ยน,ความดันลมยางปกติ,ความดันลมยางต่ำ',
+            choice: 'ปกติ,สึกเสียหาย,ต้องเปลี่ยน,ความดันลมยางปกติ,ความดันต่ำ',
             car: false,
             plan: true,
           },
@@ -230,6 +241,11 @@
       formTitle () {
         return this.editedIndex === -1 ? 'เพิ่มแบบประเมิน' : 'แก้ไขแบบประเมิน'
       },
+      categoryOptions () {
+        const categories = [...new Set(this.items.map(item => item.type))]
+        categories.push('+ เพิ่มหมวดใหม่')
+        return categories
+      },
     },
 
     methods: {
@@ -248,6 +264,7 @@
         }))
         this.form = {
           type: item.type,
+          newCategory: '',
           question: item.question,
           choices,
           car: item.car,
@@ -322,13 +339,25 @@
           return
         }
 
+        const categoryType = this.form.type === '+ เพิ่มหมวดใหม่' ? this.form.newCategory : this.form.type
+        if (this.form.type === '+ เพิ่มหมวดใหม่' && !this.form.newCategory) {
+          await Swal.fire({
+            title: 'ข้อมูลไม่ครบถ้วน',
+            text: 'กรุณากรอกชื่อหมวดใหม่',
+            icon: 'error',
+            timer: 1500,
+            showConfirmButton: false,
+          })
+          return
+        }
+
         const choiceString = this.form.choices
           .filter(choice => choice.label)
           .map(choice => choice.label)
           .join(',')
 
         const newItem = {
-          type: this.form.type,
+          type: categoryType,
           question: this.form.question,
           choice: choiceString,
           car: this.form.car,

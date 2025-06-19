@@ -114,7 +114,7 @@
           <v-btn
             icon="mdi-close"
             variant="text"
-            @click="dialog_sum = false"
+            @click="dialog = false"
           /></v-card-title>
         <v-divider />
         <v-card-text>

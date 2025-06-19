@@ -1,3 +1,4 @@
+```vue
 <template>
   <v-card
     class="pa-4 border-thin bg-white"
@@ -440,3 +441,4 @@
   font-weight: bold;
 }
 </style>
+```

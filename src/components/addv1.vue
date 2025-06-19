@@ -399,26 +399,7 @@
         }
       },
       setStopType (index, type) {
-        if (type === 'pickup') {
-          // If setting to pickup, ensure only one pickup exists
-          const currentPickupIndex = this.stops.findIndex(s => s.type === 'pickup');
-          if (currentPickupIndex !== -1 && currentPickupIndex !== index) {
-            // Change the existing pickup to dropoff
-            this.stops[currentPickupIndex].type = 'dropoff';
-          }
-          // Move the selected stop to the first position
-          if (index !== 0) {
-            const [selectedStop] = this.stops.splice(index, 1);
-            selectedStop.type = 'pickup';
-            this.stops.unshift(selectedStop);
-          } else {
-            // Already at first position, just set type
-            this.stops[index].type = 'pickup';
-          }
-        } else {
-          // Setting to dropoff, no reordering needed
-          this.stops[index].type = 'dropoff';
-        }
+        this.stops[index].type = type;
       },
     },
   };
